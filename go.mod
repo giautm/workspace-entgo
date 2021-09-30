@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/getsentry/sentry-go v0.11.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
