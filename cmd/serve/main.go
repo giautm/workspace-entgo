@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"viecco.dev/awesome/internal/hello"
+)
 
 func main() {
-	fmt.Println("Hello, world.")
+	fmt.Println(hello.Hello("World"))
 }
