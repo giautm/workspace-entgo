@@ -1,4 +1,4 @@
-module viecco.dev/awesome
+module giautm.dev/awesome
 
 go 1.17
 
@@ -15,6 +15,7 @@ require (
 require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
+	github.com/masseelch/elk v0.4.8 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/dig v1.12.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect

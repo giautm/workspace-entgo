@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
+	"giautm.dev/awesome/ent"
+	"giautm.dev/awesome/ent/user"
 	"github.com/mailru/easyjson"
 	"go.uber.org/zap"
-	"viecco.dev/awesome/ent"
-	"viecco.dev/awesome/ent/user"
 )
 
 // Create creates a new ent.User and stores it in the database.

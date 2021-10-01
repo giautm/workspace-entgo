@@ -17,7 +17,7 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp(in *jlexer.Lexer, out *UserUpdateRequest) {
+func easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp(in *jlexer.Lexer, out *UserUpdateRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -70,7 +70,7 @@ func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp(in *jlexer.Lexer, out *UserUp
 		in.Consumed()
 	}
 }
-func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp(out *jwriter.Writer, in UserUpdateRequest) {
+func easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp(out *jwriter.Writer, in UserUpdateRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -97,14 +97,14 @@ func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp(out *jwriter.Writer, in UserU
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v UserUpdateRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp(w, v)
+	easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp(w, v)
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *UserUpdateRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp(l, v)
+	easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp(l, v)
 }
-func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp1(in *jlexer.Lexer, out *UserCreateRequest) {
+func easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp1(in *jlexer.Lexer, out *UserCreateRequest) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -157,7 +157,7 @@ func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp1(in *jlexer.Lexer, out *UserC
 		in.Consumed()
 	}
 }
-func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp1(out *jwriter.Writer, in UserCreateRequest) {
+func easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp1(out *jwriter.Writer, in UserCreateRequest) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -184,14 +184,14 @@ func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp1(out *jwriter.Writer, in User
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v UserCreateRequest) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp1(w, v)
+	easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp1(w, v)
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *UserCreateRequest) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp1(l, v)
+	easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp1(l, v)
 }
-func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp2(in *jlexer.Lexer, out *User2570247333Views) {
+func easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp2(in *jlexer.Lexer, out *User2570247333Views) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		in.Skip()
@@ -227,7 +227,7 @@ func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp2(in *jlexer.Lexer, out *User2
 		in.Consumed()
 	}
 }
-func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp2(out *jwriter.Writer, in User2570247333Views) {
+func easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp2(out *jwriter.Writer, in User2570247333Views) {
 	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 		out.RawString("null")
 	} else {
@@ -248,14 +248,14 @@ func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp2(out *jwriter.Writer, in User
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v User2570247333Views) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp2(w, v)
+	easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp2(w, v)
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *User2570247333Views) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp2(l, v)
+	easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp2(l, v)
 }
-func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp3(in *jlexer.Lexer, out *User2570247333View) {
+func easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp3(in *jlexer.Lexer, out *User2570247333View) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -294,7 +294,7 @@ func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp3(in *jlexer.Lexer, out *User2
 		in.Consumed()
 	}
 }
-func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp3(out *jwriter.Writer, in User2570247333View) {
+func easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp3(out *jwriter.Writer, in User2570247333View) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -329,14 +329,14 @@ func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp3(out *jwriter.Writer, in User
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v User2570247333View) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp3(w, v)
+	easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp3(w, v)
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *User2570247333View) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp3(l, v)
+	easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp3(l, v)
 }
-func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp4(in *jlexer.Lexer, out *ErrResponse) {
+func easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp4(in *jlexer.Lexer, out *ErrResponse) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -381,7 +381,7 @@ func easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp4(in *jlexer.Lexer, out *ErrRe
 		in.Consumed()
 	}
 }
-func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp4(out *jwriter.Writer, in ErrResponse) {
+func easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp4(out *jwriter.Writer, in ErrResponse) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -411,10 +411,10 @@ func easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp4(out *jwriter.Writer, in ErrR
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
 func (v ErrResponse) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonC5a4559bEncodeVieccoDevAwesomeEntHttp4(w, v)
+	easyjsonC5a4559bEncodeGiautmDevAwesomeEntHttp4(w, v)
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *ErrResponse) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonC5a4559bDecodeVieccoDevAwesomeEntHttp4(l, v)
+	easyjsonC5a4559bDecodeGiautmDevAwesomeEntHttp4(l, v)
 }

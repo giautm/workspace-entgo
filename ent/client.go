@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log"
 
-	"viecco.dev/awesome/ent/migrate"
+	"giautm.dev/awesome/ent/migrate"
 
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/user"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

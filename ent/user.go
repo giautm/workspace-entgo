@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/user"
 )
 
 // User is the model entity for the User schema.

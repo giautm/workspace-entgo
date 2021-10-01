@@ -5,9 +5,9 @@ package enttest
 import (
 	"context"
 
-	"viecco.dev/awesome/ent"
+	"giautm.dev/awesome/ent"
 	// required by schema hooks.
-	_ "viecco.dev/awesome/ent/runtime"
+	_ "giautm.dev/awesome/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

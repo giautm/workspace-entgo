@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in viecco.dev/awesome/ent/runtime.go
+// The schema-stitching logic is generated in giautm.dev/awesome/ent/runtime.go
 
 const (
 	Version = "(devel)" // Version of ent codegen.

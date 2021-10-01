@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/user"
 )
 
 // UserCreate is the builder for creating a User entity.

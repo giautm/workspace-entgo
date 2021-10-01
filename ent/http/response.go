@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"giautm.dev/awesome/ent"
 	"github.com/mailru/easyjson"
-	"viecco.dev/awesome/ent"
 )
 
 // Basic HTTP Error Response

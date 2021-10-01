@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"giautm.dev/awesome/ent"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
-	"viecco.dev/awesome/ent"
 )
 
 // Delete removes a ent.User from the database.

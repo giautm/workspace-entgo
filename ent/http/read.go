@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"strconv"
 
+	"giautm.dev/awesome/ent"
+	"giautm.dev/awesome/ent/user"
 	"github.com/go-chi/chi/v5"
 	"github.com/mailru/easyjson"
 	"go.uber.org/zap"
-	"viecco.dev/awesome/ent"
-	"viecco.dev/awesome/ent/user"
 )
 
 // Read fetches the ent.User identified by a given url-parameter from the

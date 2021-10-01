@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"viecco.dev/awesome/ent"
+	"giautm.dev/awesome/ent"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"giautm.dev/awesome/ent"
+	elk "giautm.dev/awesome/ent/http"
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/go-chi/chi/v5"
@@ -13,8 +15,6 @@ import (
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
-	"viecco.dev/awesome/ent"
-	elk "viecco.dev/awesome/ent/http"
 )
 
 // NewLogger constructs a logger. It's just a regular Go function, without any

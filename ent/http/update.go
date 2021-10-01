@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
+	"giautm.dev/awesome/ent"
+	"giautm.dev/awesome/ent/user"
 	"github.com/go-chi/chi/v5"
 	"github.com/mailru/easyjson"
 	"go.uber.org/zap"
-	"viecco.dev/awesome/ent"
-	"viecco.dev/awesome/ent/user"
 )
 
 // Update updates a given ent.User and saves the changes to the database.

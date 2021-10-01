@@ -3,8 +3,8 @@
 package ent
 
 import (
-	"viecco.dev/awesome/ent/schema"
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/schema"
+	"giautm.dev/awesome/ent/user"
 )
 
 // The init function reads all schema descriptors with runtime code

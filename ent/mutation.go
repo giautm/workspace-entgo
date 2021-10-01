@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"sync"
 
-	"viecco.dev/awesome/ent/predicate"
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/predicate"
+	"giautm.dev/awesome/ent/user"
 
 	"entgo.io/ent"
 )

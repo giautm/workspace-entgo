@@ -5,9 +5,9 @@ package http
 import (
 	"strings"
 
+	"giautm.dev/awesome/ent"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
-	"viecco.dev/awesome/ent"
 )
 
 // NewHandler returns a ready to use handler with all generated endpoints mounted.

@@ -8,7 +8,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/user"
 )
 
 // ent aliases to avoid import conflicts in user's code.

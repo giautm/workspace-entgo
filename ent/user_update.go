@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"viecco.dev/awesome/ent/predicate"
-	"viecco.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/predicate"
+	"giautm.dev/awesome/ent/user"
 )
 
 // UserUpdate is the builder for updating User entities.
