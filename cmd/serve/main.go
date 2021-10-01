@@ -56,13 +56,16 @@ func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
 		return nil, err
 	}
 
-	// Run the auto migration tool.
-	if err := client.Schema.Create(context.Background()); err != nil {
-		logger.Error(fmt.Sprintf("failed creating schema resources: %v", err))
-		return nil, err
-	}
-
 	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			// Run the auto migration tool.
+			if err := client.Schema.Create(ctx); err != nil {
+				logger.Error(fmt.Sprintf("failed creating schema resources: %v", err))
+				return err
+			}
+
+			return nil
+		},
 		OnStop: func(ctx context.Context) error {
 			logger.Info("Close Ent client.")
 			return client.Close()
