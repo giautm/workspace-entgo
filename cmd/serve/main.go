@@ -8,10 +8,10 @@ import (
 
 	"giautm.dev/awesome/ent"
 	elk "giautm.dev/awesome/ent/http"
+	"giautm.dev/awesome/internal/database"
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/go-chi/chi/v5"
-	_ "github.com/mattn/go-sqlite3"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
 	"go.uber.org/zap"
@@ -46,33 +46,6 @@ func NewSentry(logger *zap.Logger) (*sentryhttp.Handler, error) {
 	}
 
 	return sentryhttp.New(sentryhttp.Options{}), nil
-}
-
-func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
-	// Create the ent client.
-	client, err := ent.Open("sqlite3", "./ent.db?_fk=1")
-	if err != nil {
-		logger.Error(fmt.Sprintf("failed opening connection to sqlite: %v", err))
-		return nil, err
-	}
-
-	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
-			// Run the auto migration tool.
-			if err := client.Schema.Create(ctx); err != nil {
-				logger.Error(fmt.Sprintf("failed creating schema resources: %v", err))
-				return err
-			}
-
-			return nil
-		},
-		OnStop: func(ctx context.Context) error {
-			logger.Info("Close Ent client.")
-			return client.Close()
-		},
-	})
-
-	return client, nil
 }
 
 // NewHandler constructs a simple HTTP handler. Since it returns an
@@ -218,7 +191,7 @@ func main() {
 		fx.Provide(
 			NewLogger,
 			NewSentry,
-			NewEntClientFx,
+			database.NewEntClientFx,
 			NewHandler,
 			NewMux,
 		),

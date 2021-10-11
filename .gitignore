@@ -13,3 +13,6 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+cmd/serve/ent.db
+.devcontainer/mysql
+.DS_Store
