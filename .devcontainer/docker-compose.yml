@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  devcontainer:
+    image: devcontainer_awesome:dev
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Update the VARIANT arg to pick a version of Go: 1, 1.16, 1.17
+        VARIANT: 1.17
+
+    init: true
+    volumes:
+      # Forwards the local Docker socket to the container.
+      - /var/run/docker.sock:/var/run/docker-host.sock 
+      # Update this to wherever you want VS Code to mount the folder of your project
+      - ..:/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Uncomment the next four lines if you will use a ptrace-based debuggers like C++, Go, and Rust.
+    cap_add:
+     - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+
+    # Uncomment the next line to use a non-root user for all processes.
+    user: vscode
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+    environment:
+      DB_NAME: awesome_service_dev
+      DB_USER: root
+      DB_HOST: awesomedb
+      DB_PORT: 3306
+      DB_PASSWORD: example
+      PORT: 8080
+    depends_on:
+      - awesomedb
+    links:
+      - awesomedb
+  awesomedb:
+    image: mysql:5.7
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_USER: awesome
+      MYSQL_DATABASE: awesome_service_dev
+      MYSQL_PASS: awesome@123
+      MYSQL_ROOT_PASSWORD: example
