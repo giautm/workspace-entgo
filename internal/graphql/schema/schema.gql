@@ -1,0 +1,14 @@
+# Maps a Time GraphQL scalar to a Go time.Time struct.
+scalar Time
+
+input HelloQueryInput {
+  name: String!
+}
+
+type HelloQueryResult {
+  message: String!
+}
+
+type Query {
+  helloWorld(input: HelloQueryInput!): HelloQueryResult!
+}

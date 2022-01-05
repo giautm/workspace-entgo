@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"giautm.dev/awesome/ent"
-	elk "giautm.dev/awesome/ent/http"
 	"giautm.dev/awesome/internal/database"
+	gqlserver "giautm.dev/awesome/internal/graphql"
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/go-chi/chi/v5"
@@ -81,7 +81,15 @@ func NewHandler(sentryHandler *sentryhttp.Handler, c *ent.Client, logger *zap.Lo
 
 	r := chi.NewRouter().With(sentryHandler.Handle)
 
-	r.Route("/v1", elk.NewUserHandler(c, logger).MountRoutes)
+	srv, err := gqlserver.NewServer(&gqlserver.RootResolver{},
+		gqlserver.WithEnableIntrospection(),
+		gqlserver.WithEntTransaction(c),
+		gqlserver.WithPlayground(),
+	)
+	if err != nil {
+		return nil, err
+	}
+	r.Route("/", srv.MountRoutes)
 
 	return r, nil
 }

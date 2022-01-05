@@ -6,17 +6,24 @@ package main
 import (
 	"log"
 
+	"entgo.io/contrib/entgql"
 	"entgo.io/ent/entc"
 	"entgo.io/ent/entc/gen"
-	"github.com/masseelch/elk"
 )
 
 func main() {
-	ex, err := elk.NewExtension(elk.GenerateHandlers())
+	exEntGQL, err := entgql.NewExtension(
+		entgql.WithWhereFilters(true),
+		entgql.WithConfigPath("../gqlgen.yml"),
+		// Generate the filters to a separate schema
+		// file and load it in the gqlgen.yml config.
+		entgql.WithSchemaPath("../internal/graphql/schema/ent.gql"),
+	)
 	if err != nil {
-		log.Fatalf("creating elk extension: %v", err)
+		log.Fatalf("creating EntGQL extension: %v", err)
 	}
-	err = entc.Generate("./schema", &gen.Config{}, entc.Extensions(ex))
+
+	err = entc.Generate("./schema", &gen.Config{}, entc.Extensions(exEntGQL))
 	if err != nil {
 		log.Fatalf("running ent codegen: %v", err)
 	}
