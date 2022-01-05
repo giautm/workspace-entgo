@@ -9,13 +9,25 @@ import (
 )
 
 // CollectFields tells the query-builder to eagerly load connected nodes by resolver context.
-func (u *UserQuery) CollectFields(ctx context.Context, satisfies ...string) *UserQuery {
+func (t *TodoQuery) CollectFields(ctx context.Context, satisfies ...string) *TodoQuery {
 	if fc := graphql.GetFieldContext(ctx); fc != nil {
-		u = u.collectField(graphql.GetOperationContext(ctx), fc.Field, satisfies...)
+		t = t.collectField(graphql.GetOperationContext(ctx), fc.Field, satisfies...)
 	}
-	return u
+	return t
 }
 
-func (u *UserQuery) collectField(ctx *graphql.OperationContext, field graphql.CollectedField, satisfies ...string) *UserQuery {
-	return u
+func (t *TodoQuery) collectField(ctx *graphql.OperationContext, field graphql.CollectedField, satisfies ...string) *TodoQuery {
+	for _, field := range graphql.CollectFields(ctx, field.Selections, satisfies) {
+		switch field.Name {
+		case "children":
+			t = t.WithChildren(func(query *TodoQuery) {
+				query.collectField(ctx, field)
+			})
+		case "parent":
+			t = t.WithParent(func(query *TodoQuery) {
+				query.collectField(ctx, field)
+			})
+		}
+	}
+	return t
 }

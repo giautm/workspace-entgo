@@ -14,18 +14,18 @@ import (
 func main() {
 	exEntGQL, err := entgql.NewExtension(
 		entgql.WithWhereFilters(true),
-		entgql.WithConfigPath("../gqlgen.yml"),
+		entgql.WithConfigPath("./gqlgen.yml"),
 		// Generate the filters to a separate schema
 		// file and load it in the gqlgen.yml config.
-		entgql.WithSchemaPath("../internal/graphql/schema/ent.gql"),
+		entgql.WithSchemaPath("./internal/graphql/schema/ent.gql"),
 	)
 	if err != nil {
 		log.Fatalf("creating EntGQL extension: %v", err)
 	}
 
-	err = entc.Generate("./schema", &gen.Config{},
+	err = entc.Generate("./ent/schema", &gen.Config{},
 		entc.Extensions(exEntGQL),
-		entc.TemplateDir("./template"),
+		entc.TemplateDir("./ent/template"),
 	)
 	if err != nil {
 		log.Fatalf("running ent codegen: %v", err)

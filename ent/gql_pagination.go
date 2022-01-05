@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"giautm.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/todo"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/errcode"
 	"github.com/vektah/gqlparser/v2/gqlerror"
@@ -232,124 +232,124 @@ const (
 	totalCountField = "totalCount"
 )
 
-// UserEdge is the edge representation of User.
-type UserEdge struct {
-	Node   *User  `json:"node"`
+// TodoEdge is the edge representation of Todo.
+type TodoEdge struct {
+	Node   *Todo  `json:"node"`
 	Cursor Cursor `json:"cursor"`
 }
 
-// UserConnection is the connection containing edges to User.
-type UserConnection struct {
-	Edges      []*UserEdge `json:"edges"`
+// TodoConnection is the connection containing edges to Todo.
+type TodoConnection struct {
+	Edges      []*TodoEdge `json:"edges"`
 	PageInfo   PageInfo    `json:"pageInfo"`
 	TotalCount int         `json:"totalCount"`
 }
 
-// UserPaginateOption enables pagination customization.
-type UserPaginateOption func(*userPager) error
+// TodoPaginateOption enables pagination customization.
+type TodoPaginateOption func(*todoPager) error
 
-// WithUserOrder configures pagination ordering.
-func WithUserOrder(order *UserOrder) UserPaginateOption {
+// WithTodoOrder configures pagination ordering.
+func WithTodoOrder(order *TodoOrder) TodoPaginateOption {
 	if order == nil {
-		order = DefaultUserOrder
+		order = DefaultTodoOrder
 	}
 	o := *order
-	return func(pager *userPager) error {
+	return func(pager *todoPager) error {
 		if err := o.Direction.Validate(); err != nil {
 			return err
 		}
 		if o.Field == nil {
-			o.Field = DefaultUserOrder.Field
+			o.Field = DefaultTodoOrder.Field
 		}
 		pager.order = &o
 		return nil
 	}
 }
 
-// WithUserFilter configures pagination filter.
-func WithUserFilter(filter func(*UserQuery) (*UserQuery, error)) UserPaginateOption {
-	return func(pager *userPager) error {
+// WithTodoFilter configures pagination filter.
+func WithTodoFilter(filter func(*TodoQuery) (*TodoQuery, error)) TodoPaginateOption {
+	return func(pager *todoPager) error {
 		if filter == nil {
-			return errors.New("UserQuery filter cannot be nil")
+			return errors.New("TodoQuery filter cannot be nil")
 		}
 		pager.filter = filter
 		return nil
 	}
 }
 
-type userPager struct {
-	order  *UserOrder
-	filter func(*UserQuery) (*UserQuery, error)
+type todoPager struct {
+	order  *TodoOrder
+	filter func(*TodoQuery) (*TodoQuery, error)
 }
 
-func newUserPager(opts []UserPaginateOption) (*userPager, error) {
-	pager := &userPager{}
+func newTodoPager(opts []TodoPaginateOption) (*todoPager, error) {
+	pager := &todoPager{}
 	for _, opt := range opts {
 		if err := opt(pager); err != nil {
 			return nil, err
 		}
 	}
 	if pager.order == nil {
-		pager.order = DefaultUserOrder
+		pager.order = DefaultTodoOrder
 	}
 	return pager, nil
 }
 
-func (p *userPager) applyFilter(query *UserQuery) (*UserQuery, error) {
+func (p *todoPager) applyFilter(query *TodoQuery) (*TodoQuery, error) {
 	if p.filter != nil {
 		return p.filter(query)
 	}
 	return query, nil
 }
 
-func (p *userPager) toCursor(u *User) Cursor {
-	return p.order.Field.toCursor(u)
+func (p *todoPager) toCursor(t *Todo) Cursor {
+	return p.order.Field.toCursor(t)
 }
 
-func (p *userPager) applyCursors(query *UserQuery, after, before *Cursor) *UserQuery {
+func (p *todoPager) applyCursors(query *TodoQuery, after, before *Cursor) *TodoQuery {
 	for _, predicate := range cursorsToPredicates(
 		p.order.Direction, after, before,
-		p.order.Field.field, DefaultUserOrder.Field.field,
+		p.order.Field.field, DefaultTodoOrder.Field.field,
 	) {
 		query = query.Where(predicate)
 	}
 	return query
 }
 
-func (p *userPager) applyOrder(query *UserQuery, reverse bool) *UserQuery {
+func (p *todoPager) applyOrder(query *TodoQuery, reverse bool) *TodoQuery {
 	direction := p.order.Direction
 	if reverse {
 		direction = direction.reverse()
 	}
 	query = query.Order(direction.orderFunc(p.order.Field.field))
-	if p.order.Field != DefaultUserOrder.Field {
-		query = query.Order(direction.orderFunc(DefaultUserOrder.Field.field))
+	if p.order.Field != DefaultTodoOrder.Field {
+		query = query.Order(direction.orderFunc(DefaultTodoOrder.Field.field))
 	}
 	return query
 }
 
-// Paginate executes the query and returns a relay based cursor connection to User.
-func (u *UserQuery) Paginate(
+// Paginate executes the query and returns a relay based cursor connection to Todo.
+func (t *TodoQuery) Paginate(
 	ctx context.Context, after *Cursor, first *int,
-	before *Cursor, last *int, opts ...UserPaginateOption,
-) (*UserConnection, error) {
+	before *Cursor, last *int, opts ...TodoPaginateOption,
+) (*TodoConnection, error) {
 	if err := validateFirstLast(first, last); err != nil {
 		return nil, err
 	}
-	pager, err := newUserPager(opts)
+	pager, err := newTodoPager(opts)
 	if err != nil {
 		return nil, err
 	}
 
-	if u, err = pager.applyFilter(u); err != nil {
+	if t, err = pager.applyFilter(t); err != nil {
 		return nil, err
 	}
 
-	conn := &UserConnection{Edges: []*UserEdge{}}
+	conn := &TodoConnection{Edges: []*TodoEdge{}}
 	if !hasCollectedField(ctx, edgesField) || first != nil && *first == 0 || last != nil && *last == 0 {
 		if hasCollectedField(ctx, totalCountField) ||
 			hasCollectedField(ctx, pageInfoField) {
-			count, err := u.Count(ctx)
+			count, err := t.Count(ctx)
 			if err != nil {
 				return nil, err
 			}
@@ -361,15 +361,15 @@ func (u *UserQuery) Paginate(
 	}
 
 	if (after != nil || first != nil || before != nil || last != nil) && hasCollectedField(ctx, totalCountField) {
-		count, err := u.Clone().Count(ctx)
+		count, err := t.Clone().Count(ctx)
 		if err != nil {
 			return nil, err
 		}
 		conn.TotalCount = count
 	}
 
-	u = pager.applyCursors(u, after, before)
-	u = pager.applyOrder(u, last != nil)
+	t = pager.applyCursors(t, after, before)
+	t = pager.applyOrder(t, last != nil)
 	var limit int
 	if first != nil {
 		limit = *first + 1
@@ -377,14 +377,14 @@ func (u *UserQuery) Paginate(
 		limit = *last + 1
 	}
 	if limit > 0 {
-		u = u.Limit(limit)
+		t = t.Limit(limit)
 	}
 
 	if field := getCollectedField(ctx, edgesField, nodeField); field != nil {
-		u = u.collectField(graphql.GetOperationContext(ctx), *field)
+		t = t.collectField(graphql.GetOperationContext(ctx), *field)
 	}
 
-	nodes, err := u.All(ctx)
+	nodes, err := t.All(ctx)
 	if err != nil || len(nodes) == 0 {
 		return conn, err
 	}
@@ -395,22 +395,22 @@ func (u *UserQuery) Paginate(
 		nodes = nodes[:len(nodes)-1]
 	}
 
-	var nodeAt func(int) *User
+	var nodeAt func(int) *Todo
 	if last != nil {
 		n := len(nodes) - 1
-		nodeAt = func(i int) *User {
+		nodeAt = func(i int) *Todo {
 			return nodes[n-i]
 		}
 	} else {
-		nodeAt = func(i int) *User {
+		nodeAt = func(i int) *Todo {
 			return nodes[i]
 		}
 	}
 
-	conn.Edges = make([]*UserEdge, len(nodes))
+	conn.Edges = make([]*TodoEdge, len(nodes))
 	for i := range nodes {
 		node := nodeAt(i)
-		conn.Edges[i] = &UserEdge{
+		conn.Edges[i] = &TodoEdge{
 			Node:   node,
 			Cursor: pager.toCursor(node),
 		}
@@ -425,36 +425,121 @@ func (u *UserQuery) Paginate(
 	return conn, nil
 }
 
-// UserOrderField defines the ordering field of User.
-type UserOrderField struct {
+var (
+	// TodoOrderFieldText orders Todo by text.
+	TodoOrderFieldText = &TodoOrderField{
+		field: todo.FieldText,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.Text,
+			}
+		},
+	}
+	// TodoOrderFieldCreatedAt orders Todo by created_at.
+	TodoOrderFieldCreatedAt = &TodoOrderField{
+		field: todo.FieldCreatedAt,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.CreatedAt,
+			}
+		},
+	}
+	// TodoOrderFieldStatus orders Todo by status.
+	TodoOrderFieldStatus = &TodoOrderField{
+		field: todo.FieldStatus,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.Status,
+			}
+		},
+	}
+	// TodoOrderFieldPriority orders Todo by priority.
+	TodoOrderFieldPriority = &TodoOrderField{
+		field: todo.FieldPriority,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.Priority,
+			}
+		},
+	}
+)
+
+// String implement fmt.Stringer interface.
+func (f TodoOrderField) String() string {
+	var str string
+	switch f.field {
+	case todo.FieldText:
+		str = "TEXT"
+	case todo.FieldCreatedAt:
+		str = "CREATED_AT"
+	case todo.FieldStatus:
+		str = "STATUS"
+	case todo.FieldPriority:
+		str = "PRIORITY"
+	}
+	return str
+}
+
+// MarshalGQL implements graphql.Marshaler interface.
+func (f TodoOrderField) MarshalGQL(w io.Writer) {
+	io.WriteString(w, strconv.Quote(f.String()))
+}
+
+// UnmarshalGQL implements graphql.Unmarshaler interface.
+func (f *TodoOrderField) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("TodoOrderField %T must be a string", v)
+	}
+	switch str {
+	case "TEXT":
+		*f = *TodoOrderFieldText
+	case "CREATED_AT":
+		*f = *TodoOrderFieldCreatedAt
+	case "STATUS":
+		*f = *TodoOrderFieldStatus
+	case "PRIORITY":
+		*f = *TodoOrderFieldPriority
+	default:
+		return fmt.Errorf("%s is not a valid TodoOrderField", str)
+	}
+	return nil
+}
+
+// TodoOrderField defines the ordering field of Todo.
+type TodoOrderField struct {
 	field    string
-	toCursor func(*User) Cursor
+	toCursor func(*Todo) Cursor
 }
 
-// UserOrder defines the ordering of User.
-type UserOrder struct {
+// TodoOrder defines the ordering of Todo.
+type TodoOrder struct {
 	Direction OrderDirection  `json:"direction"`
-	Field     *UserOrderField `json:"field"`
+	Field     *TodoOrderField `json:"field"`
 }
 
-// DefaultUserOrder is the default ordering of User.
-var DefaultUserOrder = &UserOrder{
+// DefaultTodoOrder is the default ordering of Todo.
+var DefaultTodoOrder = &TodoOrder{
 	Direction: OrderDirectionAsc,
-	Field: &UserOrderField{
-		field: user.FieldID,
-		toCursor: func(u *User) Cursor {
-			return Cursor{ID: u.ID}
+	Field: &TodoOrderField{
+		field: todo.FieldID,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{ID: t.ID}
 		},
 	},
 }
 
-// ToEdge converts User into UserEdge.
-func (u *User) ToEdge(order *UserOrder) *UserEdge {
+// ToEdge converts Todo into TodoEdge.
+func (t *Todo) ToEdge(order *TodoOrder) *TodoEdge {
 	if order == nil {
-		order = DefaultUserOrder
+		order = DefaultTodoOrder
 	}
-	return &UserEdge{
-		Node:   u,
-		Cursor: order.Field.toCursor(u),
+	return &TodoEdge{
+		Node:   t,
+		Cursor: order.Field.toCursor(t),
 	}
 }

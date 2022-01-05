@@ -4,16 +4,17 @@ package ent
 
 import (
 	"fmt"
+	"time"
 
 	"giautm.dev/awesome/ent/predicate"
-	"giautm.dev/awesome/ent/user"
+	"giautm.dev/awesome/ent/todo"
 )
 
-// UserWhereInput represents a where input for filtering User queries.
-type UserWhereInput struct {
-	Not *UserWhereInput   `json:"not,omitempty"`
-	Or  []*UserWhereInput `json:"or,omitempty"`
-	And []*UserWhereInput `json:"and,omitempty"`
+// TodoWhereInput represents a where input for filtering Todo queries.
+type TodoWhereInput struct {
+	Not *TodoWhereInput   `json:"not,omitempty"`
+	Or  []*TodoWhereInput `json:"or,omitempty"`
+	And []*TodoWhereInput `json:"and,omitempty"`
 
 	// "id" field predicates.
 	ID      *int  `json:"id,omitempty"`
@@ -25,34 +26,58 @@ type UserWhereInput struct {
 	IDLT    *int  `json:"idLT,omitempty"`
 	IDLTE   *int  `json:"idLTE,omitempty"`
 
-	// "age" field predicates.
-	Age      *int  `json:"age,omitempty"`
-	AgeNEQ   *int  `json:"ageNEQ,omitempty"`
-	AgeIn    []int `json:"ageIn,omitempty"`
-	AgeNotIn []int `json:"ageNotIn,omitempty"`
-	AgeGT    *int  `json:"ageGT,omitempty"`
-	AgeGTE   *int  `json:"ageGTE,omitempty"`
-	AgeLT    *int  `json:"ageLT,omitempty"`
-	AgeLTE   *int  `json:"ageLTE,omitempty"`
+	// "text" field predicates.
+	Text             *string  `json:"text,omitempty"`
+	TextNEQ          *string  `json:"textNEQ,omitempty"`
+	TextIn           []string `json:"textIn,omitempty"`
+	TextNotIn        []string `json:"textNotIn,omitempty"`
+	TextGT           *string  `json:"textGT,omitempty"`
+	TextGTE          *string  `json:"textGTE,omitempty"`
+	TextLT           *string  `json:"textLT,omitempty"`
+	TextLTE          *string  `json:"textLTE,omitempty"`
+	TextContains     *string  `json:"textContains,omitempty"`
+	TextHasPrefix    *string  `json:"textHasPrefix,omitempty"`
+	TextHasSuffix    *string  `json:"textHasSuffix,omitempty"`
+	TextEqualFold    *string  `json:"textEqualFold,omitempty"`
+	TextContainsFold *string  `json:"textContainsFold,omitempty"`
 
-	// "name" field predicates.
-	Name             *string  `json:"name,omitempty"`
-	NameNEQ          *string  `json:"nameNEQ,omitempty"`
-	NameIn           []string `json:"nameIn,omitempty"`
-	NameNotIn        []string `json:"nameNotIn,omitempty"`
-	NameGT           *string  `json:"nameGT,omitempty"`
-	NameGTE          *string  `json:"nameGTE,omitempty"`
-	NameLT           *string  `json:"nameLT,omitempty"`
-	NameLTE          *string  `json:"nameLTE,omitempty"`
-	NameContains     *string  `json:"nameContains,omitempty"`
-	NameHasPrefix    *string  `json:"nameHasPrefix,omitempty"`
-	NameHasSuffix    *string  `json:"nameHasSuffix,omitempty"`
-	NameEqualFold    *string  `json:"nameEqualFold,omitempty"`
-	NameContainsFold *string  `json:"nameContainsFold,omitempty"`
+	// "created_at" field predicates.
+	CreatedAt      *time.Time  `json:"createdAt,omitempty"`
+	CreatedAtNEQ   *time.Time  `json:"createdAtNEQ,omitempty"`
+	CreatedAtIn    []time.Time `json:"createdAtIn,omitempty"`
+	CreatedAtNotIn []time.Time `json:"createdAtNotIn,omitempty"`
+	CreatedAtGT    *time.Time  `json:"createdAtGT,omitempty"`
+	CreatedAtGTE   *time.Time  `json:"createdAtGTE,omitempty"`
+	CreatedAtLT    *time.Time  `json:"createdAtLT,omitempty"`
+	CreatedAtLTE   *time.Time  `json:"createdAtLTE,omitempty"`
+
+	// "status" field predicates.
+	Status      *todo.Status  `json:"status,omitempty"`
+	StatusNEQ   *todo.Status  `json:"statusNEQ,omitempty"`
+	StatusIn    []todo.Status `json:"statusIn,omitempty"`
+	StatusNotIn []todo.Status `json:"statusNotIn,omitempty"`
+
+	// "priority" field predicates.
+	Priority      *int  `json:"priority,omitempty"`
+	PriorityNEQ   *int  `json:"priorityNEQ,omitempty"`
+	PriorityIn    []int `json:"priorityIn,omitempty"`
+	PriorityNotIn []int `json:"priorityNotIn,omitempty"`
+	PriorityGT    *int  `json:"priorityGT,omitempty"`
+	PriorityGTE   *int  `json:"priorityGTE,omitempty"`
+	PriorityLT    *int  `json:"priorityLT,omitempty"`
+	PriorityLTE   *int  `json:"priorityLTE,omitempty"`
+
+	// "children" edge predicates.
+	HasChildren     *bool             `json:"hasChildren,omitempty"`
+	HasChildrenWith []*TodoWhereInput `json:"hasChildrenWith,omitempty"`
+
+	// "parent" edge predicates.
+	HasParent     *bool             `json:"hasParent,omitempty"`
+	HasParentWith []*TodoWhereInput `json:"hasParentWith,omitempty"`
 }
 
-// Filter applies the UserWhereInput filter on the UserQuery builder.
-func (i *UserWhereInput) Filter(q *UserQuery) (*UserQuery, error) {
+// Filter applies the TodoWhereInput filter on the TodoQuery builder.
+func (i *TodoWhereInput) Filter(q *TodoQuery) (*TodoQuery, error) {
 	if i == nil {
 		return q, nil
 	}
@@ -63,16 +88,16 @@ func (i *UserWhereInput) Filter(q *UserQuery) (*UserQuery, error) {
 	return q.Where(p), nil
 }
 
-// P returns a predicate for filtering users.
+// P returns a predicate for filtering todos.
 // An error is returned if the input is empty or invalid.
-func (i *UserWhereInput) P() (predicate.User, error) {
-	var predicates []predicate.User
+func (i *TodoWhereInput) P() (predicate.Todo, error) {
+	var predicates []predicate.Todo
 	if i.Not != nil {
 		p, err := i.Not.P()
 		if err != nil {
 			return nil, err
 		}
-		predicates = append(predicates, user.Not(p))
+		predicates = append(predicates, todo.Not(p))
 	}
 	switch n := len(i.Or); {
 	case n == 1:
@@ -82,7 +107,7 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 		}
 		predicates = append(predicates, p)
 	case n > 1:
-		or := make([]predicate.User, 0, n)
+		or := make([]predicate.Todo, 0, n)
 		for _, w := range i.Or {
 			p, err := w.P()
 			if err != nil {
@@ -90,7 +115,7 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 			}
 			or = append(or, p)
 		}
-		predicates = append(predicates, user.Or(or...))
+		predicates = append(predicates, todo.Or(or...))
 	}
 	switch n := len(i.And); {
 	case n == 1:
@@ -100,7 +125,7 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 		}
 		predicates = append(predicates, p)
 	case n > 1:
-		and := make([]predicate.User, 0, n)
+		and := make([]predicate.Todo, 0, n)
 		for _, w := range i.And {
 			p, err := w.P()
 			if err != nil {
@@ -108,102 +133,174 @@ func (i *UserWhereInput) P() (predicate.User, error) {
 			}
 			and = append(and, p)
 		}
-		predicates = append(predicates, user.And(and...))
+		predicates = append(predicates, todo.And(and...))
 	}
 	if i.ID != nil {
-		predicates = append(predicates, user.IDEQ(*i.ID))
+		predicates = append(predicates, todo.IDEQ(*i.ID))
 	}
 	if i.IDNEQ != nil {
-		predicates = append(predicates, user.IDNEQ(*i.IDNEQ))
+		predicates = append(predicates, todo.IDNEQ(*i.IDNEQ))
 	}
 	if len(i.IDIn) > 0 {
-		predicates = append(predicates, user.IDIn(i.IDIn...))
+		predicates = append(predicates, todo.IDIn(i.IDIn...))
 	}
 	if len(i.IDNotIn) > 0 {
-		predicates = append(predicates, user.IDNotIn(i.IDNotIn...))
+		predicates = append(predicates, todo.IDNotIn(i.IDNotIn...))
 	}
 	if i.IDGT != nil {
-		predicates = append(predicates, user.IDGT(*i.IDGT))
+		predicates = append(predicates, todo.IDGT(*i.IDGT))
 	}
 	if i.IDGTE != nil {
-		predicates = append(predicates, user.IDGTE(*i.IDGTE))
+		predicates = append(predicates, todo.IDGTE(*i.IDGTE))
 	}
 	if i.IDLT != nil {
-		predicates = append(predicates, user.IDLT(*i.IDLT))
+		predicates = append(predicates, todo.IDLT(*i.IDLT))
 	}
 	if i.IDLTE != nil {
-		predicates = append(predicates, user.IDLTE(*i.IDLTE))
+		predicates = append(predicates, todo.IDLTE(*i.IDLTE))
 	}
-	if i.Age != nil {
-		predicates = append(predicates, user.AgeEQ(*i.Age))
+	if i.Text != nil {
+		predicates = append(predicates, todo.TextEQ(*i.Text))
 	}
-	if i.AgeNEQ != nil {
-		predicates = append(predicates, user.AgeNEQ(*i.AgeNEQ))
+	if i.TextNEQ != nil {
+		predicates = append(predicates, todo.TextNEQ(*i.TextNEQ))
 	}
-	if len(i.AgeIn) > 0 {
-		predicates = append(predicates, user.AgeIn(i.AgeIn...))
+	if len(i.TextIn) > 0 {
+		predicates = append(predicates, todo.TextIn(i.TextIn...))
 	}
-	if len(i.AgeNotIn) > 0 {
-		predicates = append(predicates, user.AgeNotIn(i.AgeNotIn...))
+	if len(i.TextNotIn) > 0 {
+		predicates = append(predicates, todo.TextNotIn(i.TextNotIn...))
 	}
-	if i.AgeGT != nil {
-		predicates = append(predicates, user.AgeGT(*i.AgeGT))
+	if i.TextGT != nil {
+		predicates = append(predicates, todo.TextGT(*i.TextGT))
 	}
-	if i.AgeGTE != nil {
-		predicates = append(predicates, user.AgeGTE(*i.AgeGTE))
+	if i.TextGTE != nil {
+		predicates = append(predicates, todo.TextGTE(*i.TextGTE))
 	}
-	if i.AgeLT != nil {
-		predicates = append(predicates, user.AgeLT(*i.AgeLT))
+	if i.TextLT != nil {
+		predicates = append(predicates, todo.TextLT(*i.TextLT))
 	}
-	if i.AgeLTE != nil {
-		predicates = append(predicates, user.AgeLTE(*i.AgeLTE))
+	if i.TextLTE != nil {
+		predicates = append(predicates, todo.TextLTE(*i.TextLTE))
 	}
-	if i.Name != nil {
-		predicates = append(predicates, user.NameEQ(*i.Name))
+	if i.TextContains != nil {
+		predicates = append(predicates, todo.TextContains(*i.TextContains))
 	}
-	if i.NameNEQ != nil {
-		predicates = append(predicates, user.NameNEQ(*i.NameNEQ))
+	if i.TextHasPrefix != nil {
+		predicates = append(predicates, todo.TextHasPrefix(*i.TextHasPrefix))
 	}
-	if len(i.NameIn) > 0 {
-		predicates = append(predicates, user.NameIn(i.NameIn...))
+	if i.TextHasSuffix != nil {
+		predicates = append(predicates, todo.TextHasSuffix(*i.TextHasSuffix))
 	}
-	if len(i.NameNotIn) > 0 {
-		predicates = append(predicates, user.NameNotIn(i.NameNotIn...))
+	if i.TextEqualFold != nil {
+		predicates = append(predicates, todo.TextEqualFold(*i.TextEqualFold))
 	}
-	if i.NameGT != nil {
-		predicates = append(predicates, user.NameGT(*i.NameGT))
+	if i.TextContainsFold != nil {
+		predicates = append(predicates, todo.TextContainsFold(*i.TextContainsFold))
 	}
-	if i.NameGTE != nil {
-		predicates = append(predicates, user.NameGTE(*i.NameGTE))
+	if i.CreatedAt != nil {
+		predicates = append(predicates, todo.CreatedAtEQ(*i.CreatedAt))
 	}
-	if i.NameLT != nil {
-		predicates = append(predicates, user.NameLT(*i.NameLT))
+	if i.CreatedAtNEQ != nil {
+		predicates = append(predicates, todo.CreatedAtNEQ(*i.CreatedAtNEQ))
 	}
-	if i.NameLTE != nil {
-		predicates = append(predicates, user.NameLTE(*i.NameLTE))
+	if len(i.CreatedAtIn) > 0 {
+		predicates = append(predicates, todo.CreatedAtIn(i.CreatedAtIn...))
 	}
-	if i.NameContains != nil {
-		predicates = append(predicates, user.NameContains(*i.NameContains))
+	if len(i.CreatedAtNotIn) > 0 {
+		predicates = append(predicates, todo.CreatedAtNotIn(i.CreatedAtNotIn...))
 	}
-	if i.NameHasPrefix != nil {
-		predicates = append(predicates, user.NameHasPrefix(*i.NameHasPrefix))
+	if i.CreatedAtGT != nil {
+		predicates = append(predicates, todo.CreatedAtGT(*i.CreatedAtGT))
 	}
-	if i.NameHasSuffix != nil {
-		predicates = append(predicates, user.NameHasSuffix(*i.NameHasSuffix))
+	if i.CreatedAtGTE != nil {
+		predicates = append(predicates, todo.CreatedAtGTE(*i.CreatedAtGTE))
 	}
-	if i.NameEqualFold != nil {
-		predicates = append(predicates, user.NameEqualFold(*i.NameEqualFold))
+	if i.CreatedAtLT != nil {
+		predicates = append(predicates, todo.CreatedAtLT(*i.CreatedAtLT))
 	}
-	if i.NameContainsFold != nil {
-		predicates = append(predicates, user.NameContainsFold(*i.NameContainsFold))
+	if i.CreatedAtLTE != nil {
+		predicates = append(predicates, todo.CreatedAtLTE(*i.CreatedAtLTE))
+	}
+	if i.Status != nil {
+		predicates = append(predicates, todo.StatusEQ(*i.Status))
+	}
+	if i.StatusNEQ != nil {
+		predicates = append(predicates, todo.StatusNEQ(*i.StatusNEQ))
+	}
+	if len(i.StatusIn) > 0 {
+		predicates = append(predicates, todo.StatusIn(i.StatusIn...))
+	}
+	if len(i.StatusNotIn) > 0 {
+		predicates = append(predicates, todo.StatusNotIn(i.StatusNotIn...))
+	}
+	if i.Priority != nil {
+		predicates = append(predicates, todo.PriorityEQ(*i.Priority))
+	}
+	if i.PriorityNEQ != nil {
+		predicates = append(predicates, todo.PriorityNEQ(*i.PriorityNEQ))
+	}
+	if len(i.PriorityIn) > 0 {
+		predicates = append(predicates, todo.PriorityIn(i.PriorityIn...))
+	}
+	if len(i.PriorityNotIn) > 0 {
+		predicates = append(predicates, todo.PriorityNotIn(i.PriorityNotIn...))
+	}
+	if i.PriorityGT != nil {
+		predicates = append(predicates, todo.PriorityGT(*i.PriorityGT))
+	}
+	if i.PriorityGTE != nil {
+		predicates = append(predicates, todo.PriorityGTE(*i.PriorityGTE))
+	}
+	if i.PriorityLT != nil {
+		predicates = append(predicates, todo.PriorityLT(*i.PriorityLT))
+	}
+	if i.PriorityLTE != nil {
+		predicates = append(predicates, todo.PriorityLTE(*i.PriorityLTE))
 	}
 
+	if i.HasChildren != nil {
+		p := todo.HasChildren()
+		if !*i.HasChildren {
+			p = todo.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasChildrenWith) > 0 {
+		with := make([]predicate.Todo, 0, len(i.HasChildrenWith))
+		for _, w := range i.HasChildrenWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, err
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, todo.HasChildrenWith(with...))
+	}
+	if i.HasParent != nil {
+		p := todo.HasParent()
+		if !*i.HasParent {
+			p = todo.Not(p)
+		}
+		predicates = append(predicates, p)
+	}
+	if len(i.HasParentWith) > 0 {
+		with := make([]predicate.Todo, 0, len(i.HasParentWith))
+		for _, w := range i.HasParentWith {
+			p, err := w.P()
+			if err != nil {
+				return nil, err
+			}
+			with = append(with, p)
+		}
+		predicates = append(predicates, todo.HasParentWith(with...))
+	}
 	switch len(predicates) {
 	case 0:
-		return nil, fmt.Errorf("giautm.dev/awesome/ent: empty predicate UserWhereInput")
+		return nil, fmt.Errorf("giautm.dev/awesome/ent: empty predicate TodoWhereInput")
 	case 1:
 		return predicates[0], nil
 	default:
-		return user.And(predicates...), nil
+		return todo.And(predicates...), nil
 	}
 }

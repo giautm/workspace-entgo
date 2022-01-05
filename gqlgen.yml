@@ -38,3 +38,9 @@ models:
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.IntID
+  Node:
+    model:
+      - giautm.dev/awesome/ent.Noder
+  Status:
+    model:
+      - giautm.dev/awesome/ent/todo.Status

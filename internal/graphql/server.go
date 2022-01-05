@@ -18,8 +18,6 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type RootResolver = resolver.Resolver
-
 type config struct {
 	entClient     *ent.Client
 	playground    bool
@@ -55,7 +53,7 @@ type Server struct {
 }
 
 func NewServer(
-	resolvers *RootResolver,
+	resolvers *resolver.Resolver,
 	opts ...Option,
 ) (*Server, error) {
 	cfg := &config{
@@ -124,7 +122,7 @@ func (s *Server) handleQuery() http.Handler {
 }
 
 func NewServeFx(client *ent.Client) (*Server, error) {
-	return NewServer(&RootResolver{},
+	return NewServer(resolver.NewResolver(client),
 		WithEnableIntrospection(),
 		WithEntTransaction(client),
 		WithPlayground(),

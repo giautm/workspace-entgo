@@ -12,7 +12,6 @@ require (
 	github.com/go-chi/chi/v5 v5.0.4
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/mailru/easyjson v0.7.7
 	github.com/vektah/gqlparser/v2 v2.2.0
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
 	go.uber.org/fx v1.14.2
@@ -34,7 +33,6 @@ require (
 	github.com/graphql-go/graphql v0.7.10-0.20210411022516-8a92e977c10b // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
-	github.com/josharian/intern v1.0.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
