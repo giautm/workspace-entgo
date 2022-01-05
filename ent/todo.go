@@ -179,6 +179,9 @@ func (t *Todo) String() string {
 	return builder.String()
 }
 
+// IsEntity implement fedruntime.Entity
+func (t Todo) IsEntity() {}
+
 func (t Todos) PluckIDs() []int {
 	ids := make([]int, len(t))
 	for _i := range t {

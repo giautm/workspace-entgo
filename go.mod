@@ -9,7 +9,7 @@ require (
 	github.com/99designs/gqlgen v0.14.0
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
 	github.com/getsentry/sentry-go v0.11.0
-	github.com/go-chi/chi/v5 v5.0.4
+	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/vektah/gqlparser/v2 v2.2.0
@@ -31,11 +31,10 @@ require (
 	github.com/googleapis/gax-go/v2 v2.1.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/graphql-go/graphql v0.7.10-0.20210411022516-8a92e977c10b // indirect
-	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
@@ -52,4 +51,10 @@ require (
 	google.golang.org/grpc v1.40.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+)
+
+replace (
+	entgo.io/contrib => github.com/giautm/ent-contrib v0.0.0-20220105143516-07fe4a80d978
+	github.com/99designs/gqlgen => github.com/99designs/gqlgen v0.14.1-0.20220105021018-47015f12e3aa
+	github.com/99designs/gqlgen-contrib => github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
 )
