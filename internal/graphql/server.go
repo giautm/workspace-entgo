@@ -122,3 +122,11 @@ func (s *Server) handleQuery() http.Handler {
 
 	return srv
 }
+
+func NewServeFx(client *ent.Client) (*Server, error) {
+	return NewServer(&RootResolver{},
+		WithEnableIntrospection(),
+		WithEntTransaction(client),
+		WithPlayground(),
+	)
+}

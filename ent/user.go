@@ -99,6 +99,14 @@ func (u *User) String() string {
 	return builder.String()
 }
 
+func (u Users) PluckIDs() []int {
+	ids := make([]int, len(u))
+	for _i := range u {
+		ids[_i] = u[_i].ID
+	}
+	return ids
+}
+
 // Users is a parsable slice of User.
 type Users []*User
 

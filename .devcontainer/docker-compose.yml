@@ -38,6 +38,8 @@ services:
       DB_PORT: 3306
       DB_PASSWORD: example
       PORT: 8080
+      LOG_MODE: development
+      LOG_LEVEL: DEBUG
     depends_on:
       - awesomedb
     links:

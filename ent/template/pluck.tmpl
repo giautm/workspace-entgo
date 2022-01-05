@@ -1,0 +1,10 @@
+{{ define "model/additional/pluck" }}
+	{{ $slice := plural $.Name }}
+	func ({{ $.Receiver }} {{ $slice }}) PluckIDs() []{{ $.ID.Type }} {
+		ids := make([]{{ $.ID.Type }}, len({{ $.Receiver }}))
+		for _i := range {{ $.Receiver }} {
+			ids[_i] = {{ $.Receiver }}[_i].ID
+		}
+		return ids
+	}
+{{ end }}

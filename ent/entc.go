@@ -23,7 +23,10 @@ func main() {
 		log.Fatalf("creating EntGQL extension: %v", err)
 	}
 
-	err = entc.Generate("./schema", &gen.Config{}, entc.Extensions(exEntGQL))
+	err = entc.Generate("./schema", &gen.Config{},
+		entc.Extensions(exEntGQL),
+		entc.TemplateDir("./template"),
+	)
 	if err != nil {
 		log.Fatalf("running ent codegen: %v", err)
 	}

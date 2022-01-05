@@ -10,9 +10,20 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+coverage.txt
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
+
 cmd/serve/ent.db
 .devcontainer/mysql
 .DS_Store
+
+# Environment variables
+.env
+
+# Go build output
+bin/*
+
+# VSCode debug binary
+cmd/*/__debug_bin

@@ -30,6 +30,7 @@ func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			// Run the auto migration tool.
+			logger.Info("Ent Migrating.")
 			err := client.Schema.Create(ctx,
 				migrate.WithGlobalUniqueID(true),
 			)
