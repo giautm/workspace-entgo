@@ -20,8 +20,14 @@ import (
 
 type config struct {
 	entClient     *ent.Client
-	playground    bool
+	apollotracing bool
+	debug         bool
 	introspection bool
+	opencensus    bool
+	playground    bool
+
+	queryCacheSize          int
+	persistedQueryCacheSize int
 }
 
 type Option func(*config) error
@@ -46,6 +52,49 @@ func WithEnableIntrospection() Option {
 		return nil
 	}
 }
+
+func WithOpencensus() Option {
+	return func(c *config) error {
+		c.opencensus = true
+		return nil
+	}
+}
+
+func WithApolloTracing() Option {
+	return func(c *config) error {
+		c.apollotracing = true
+		return nil
+	}
+}
+
+func WithQueryCache(size int) Option {
+	return func(c *config) error {
+		c.queryCacheSize = size
+		return nil
+	}
+}
+
+func WithAutomaticPersistedQuery(size int) Option {
+	return func(c *config) error {
+		c.persistedQueryCacheSize = size
+		return nil
+	}
+}
+
+var (
+	ProductionOptions = []Option{
+		WithAutomaticPersistedQuery(1000),
+		WithOpencensus(),
+		WithQueryCache(1000),
+	}
+	DevelopmentOptions = append(ProductionOptions,
+		WithApolloTracing(),
+		WithAutomaticPersistedQuery(0),
+		WithEnableIntrospection(),
+		WithPlayground(),
+		WithQueryCache(0),
+	)
+)
 
 type Server struct {
 	cfg    *config
@@ -104,27 +153,30 @@ func (s *Server) handleQuery() http.Handler {
 		srv.Use(extension.Introspection{})
 	}
 
-	srv.SetQueryCache(lru.New(1000))
-	srv.Use(extension.AutomaticPersistedQuery{
-		Cache: lru.New(1000),
-	})
-
+	if s.cfg.queryCacheSize > 0 {
+		srv.SetQueryCache(lru.New(s.cfg.queryCacheSize))
+	}
+	if s.cfg.persistedQueryCacheSize > 0 {
+		srv.Use(extension.AutomaticPersistedQuery{
+			Cache: lru.New(s.cfg.persistedQueryCacheSize),
+		})
+	}
+	if s.cfg.opencensus {
+		srv.Use(gqlopencensus.Tracer{})
+	}
+	if s.cfg.apollotracing {
+		srv.Use(apollotracing.Tracer{})
+	}
 	if s.cfg.entClient != nil {
 		srv.Use(entgql.Transactioner{
 			TxOpener: s.cfg.entClient,
 		})
 	}
 
-	srv.Use(gqlopencensus.Tracer{})
-	srv.Use(apollotracing.Tracer{})
-
 	return srv
 }
 
 func NewServeFx(client *ent.Client) (*Server, error) {
-	return NewServer(resolver.NewResolver(client),
-		WithEnableIntrospection(),
-		WithEntTransaction(client),
-		WithPlayground(),
-	)
+	opts := append(DevelopmentOptions, WithEntTransaction(client))
+	return NewServer(resolver.NewResolver(client), opts...)
 }
