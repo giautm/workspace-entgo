@@ -4,8 +4,7 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"log"
 
 	"github.com/99designs/gqlgen/api"
 	"github.com/99designs/gqlgen/codegen/config"
@@ -14,13 +13,10 @@ import (
 func main() {
 	cfg, err := config.LoadConfigFromDefaultLocations()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "failed to load config", err.Error())
-		os.Exit(2)
+		log.Fatalf("gqlgen: failed to load config: %v", err)
 	}
 
-	err = api.Generate(cfg)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err.Error())
-		os.Exit(3)
+	if err = api.Generate(cfg); err != nil {
+		log.Fatalf("gqlgen: running generate: %v", err)
 	}
 }

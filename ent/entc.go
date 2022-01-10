@@ -20,7 +20,7 @@ func main() {
 		entgql.WithSchemaPath("./internal/graphql/schema/ent.gql"),
 	)
 	if err != nil {
-		log.Fatalf("creating EntGQL extension: %v", err)
+		log.Fatalf("entc: creating EntGQL extension: %v", err)
 	}
 
 	err = entc.Generate("./ent/schema", &gen.Config{},
@@ -28,6 +28,6 @@ func main() {
 		entc.TemplateDir("./ent/template"),
 	)
 	if err != nil {
-		log.Fatalf("running ent codegen: %v", err)
+		log.Fatalf("entc: running ent codegen: %v", err)
 	}
 }

@@ -1,7 +1,10 @@
 {
   "cSpell.words": [
     "BUILDINFO",
+    "entc",
+    "entgql",
     "GOARCH",
+    "gqlgen",
     "gqlserver"
   ]
 }
