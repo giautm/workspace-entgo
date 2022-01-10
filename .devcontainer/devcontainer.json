@@ -22,11 +22,14 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"golang.Go"
+		"golang.Go",
+		"graphql.vscode-graphql",
+		"ms-vscode-remote.remote-containers",
+		"streetsidesoftware.code-spell-checker"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080],
+	"forwardPorts": [8701],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "go version",

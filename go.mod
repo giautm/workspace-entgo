@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	contrib.go.opencensus.io/integrations/ocsql v0.1.7
-	entgo.io/contrib v0.2.1-0.20220104125732-5255cb0729b5
+	entgo.io/contrib v0.2.1-0.20220107163301-a551ba998484
 	entgo.io/ent v0.9.2-0.20220104120740-6dc452f23d06
 	github.com/99designs/gqlgen v0.14.0
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
@@ -54,7 +54,6 @@ require (
 )
 
 replace (
-	entgo.io/contrib => github.com/giautm/ent-contrib v0.0.0-20220105143516-07fe4a80d978
 	github.com/99designs/gqlgen => github.com/99designs/gqlgen v0.14.1-0.20220105021018-47015f12e3aa
 	github.com/99designs/gqlgen-contrib => github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
 )

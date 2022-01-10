@@ -37,7 +37,7 @@ services:
       DB_HOST: awesomedb
       DB_PORT: 3306
       DB_PASSWORD: example
-      PORT: 8080
+      PORT: 8701
       LOG_MODE: development
       LOG_LEVEL: DEBUG
     depends_on:
