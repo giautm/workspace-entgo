@@ -2,9 +2,13 @@
   "cSpell.words": [
     "BUILDINFO",
     "entc",
+    "entgo",
     "entgql",
     "GOARCH",
+    "gqlerror",
     "gqlgen",
-    "gqlserver"
+    "gqlparser",
+    "gqlserver",
+    "Noder"
   ]
 }
