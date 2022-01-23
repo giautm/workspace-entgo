@@ -7,10 +7,11 @@ import (
 	"context"
 
 	"giautm.dev/awesome/ent"
+	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/internal/graphql/generated"
 )
 
-func (r *entityResolver) FindTodoByID(ctx context.Context, id int) (*ent.Todo, error) {
+func (r *entityResolver) FindTodoByID(ctx context.Context, id pulid.ID) (*ent.Todo, error) {
 	todo, err := r.client.Todo.Get(ctx, id)
 	return todo, ent.MaskNotFound(err)
 }

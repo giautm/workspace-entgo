@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
 )
 
@@ -15,11 +16,13 @@ import (
 type Todo struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID pulid.ID `json:"id,omitempty"`
+	// CreateTime holds the value of the "create_time" field.
+	CreateTime time.Time `json:"create_time,omitempty"`
+	// UpdateTime holds the value of the "update_time" field.
+	UpdateTime time.Time `json:"update_time,omitempty"`
 	// Text holds the value of the "text" field.
 	Text string `json:"text,omitempty"`
-	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt time.Time `json:"created_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status todo.Status `json:"status,omitempty"`
 	// Priority holds the value of the "priority" field.
@@ -27,7 +30,7 @@ type Todo struct {
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TodoQuery when eager-loading is set.
 	Edges       TodoEdges `json:"edges"`
-	todo_parent *int
+	todo_parent *pulid.ID
 }
 
 // TodoEdges holds the relations/edges for other nodes in the graph.
@@ -69,14 +72,16 @@ func (*Todo) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case todo.FieldID, todo.FieldPriority:
+		case todo.FieldID:
+			values[i] = new(pulid.ID)
+		case todo.FieldPriority:
 			values[i] = new(sql.NullInt64)
 		case todo.FieldText, todo.FieldStatus:
 			values[i] = new(sql.NullString)
-		case todo.FieldCreatedAt:
+		case todo.FieldCreateTime, todo.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
 		case todo.ForeignKeys[0]: // todo_parent
-			values[i] = new(sql.NullInt64)
+			values[i] = &sql.NullScanner{S: new(pulid.ID)}
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Todo", columns[i])
 		}
@@ -93,22 +98,28 @@ func (t *Todo) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case todo.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*pulid.ID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				t.ID = *value
 			}
-			t.ID = int(value.Int64)
+		case todo.FieldCreateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_time", values[i])
+			} else if value.Valid {
+				t.CreateTime = value.Time
+			}
+		case todo.FieldUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_time", values[i])
+			} else if value.Valid {
+				t.UpdateTime = value.Time
+			}
 		case todo.FieldText:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field text", values[i])
 			} else if value.Valid {
 				t.Text = value.String
-			}
-		case todo.FieldCreatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field created_at", values[i])
-			} else if value.Valid {
-				t.CreatedAt = value.Time
 			}
 		case todo.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -123,11 +134,11 @@ func (t *Todo) assignValues(columns []string, values []interface{}) error {
 				t.Priority = int(value.Int64)
 			}
 		case todo.ForeignKeys[0]:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field todo_parent", value)
+			if value, ok := values[i].(*sql.NullScanner); !ok {
+				return fmt.Errorf("unexpected type %T for field todo_parent", values[i])
 			} else if value.Valid {
-				t.todo_parent = new(int)
-				*t.todo_parent = int(value.Int64)
+				t.todo_parent = new(pulid.ID)
+				*t.todo_parent = *value.S.(*pulid.ID)
 			}
 		}
 	}
@@ -167,10 +178,12 @@ func (t *Todo) String() string {
 	var builder strings.Builder
 	builder.WriteString("Todo(")
 	builder.WriteString(fmt.Sprintf("id=%v", t.ID))
+	builder.WriteString(", create_time=")
+	builder.WriteString(t.CreateTime.Format(time.ANSIC))
+	builder.WriteString(", update_time=")
+	builder.WriteString(t.UpdateTime.Format(time.ANSIC))
 	builder.WriteString(", text=")
 	builder.WriteString(t.Text)
-	builder.WriteString(", created_at=")
-	builder.WriteString(t.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", status=")
 	builder.WriteString(fmt.Sprintf("%v", t.Status))
 	builder.WriteString(", priority=")
@@ -182,8 +195,8 @@ func (t *Todo) String() string {
 // IsEntity implement fedruntime.Entity
 func (t Todo) IsEntity() {}
 
-func (t Todos) PluckIDs() []int {
-	ids := make([]int, len(t))
+func (t Todos) PluckIDs() []pulid.ID {
+	ids := make([]pulid.ID, len(t))
 	for _i := range t {
 		ids[_i] = t[_i].ID
 	}

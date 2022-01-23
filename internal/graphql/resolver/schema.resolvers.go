@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"giautm.dev/awesome/ent"
+	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
 	"giautm.dev/awesome/internal/graphql/generated"
 	"giautm.dev/awesome/internal/graphql/model"
@@ -17,11 +18,11 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input ent.CreateTodoI
 	return ent.FromContext(ctx).Todo.Create().SetInput(input).Save(ctx)
 }
 
-func (r *mutationResolver) UpdateTodo(ctx context.Context, id int, input ent.UpdateTodoInput) (*ent.Todo, error) {
+func (r *mutationResolver) UpdateTodo(ctx context.Context, id pulid.ID, input ent.UpdateTodoInput) (*ent.Todo, error) {
 	return ent.FromContext(ctx).Todo.UpdateOneID(id).SetInput(input).Save(ctx)
 }
 
-func (r *mutationResolver) UpdateTodos(ctx context.Context, ids []int, input ent.UpdateTodoInput) ([]*ent.Todo, error) {
+func (r *mutationResolver) UpdateTodos(ctx context.Context, ids []pulid.ID, input ent.UpdateTodoInput) ([]*ent.Todo, error) {
 	client := ent.FromContext(ctx)
 	if err := client.Todo.Update().Where(todo.IDIn(ids...)).SetInput(input).Exec(ctx); err != nil {
 		return nil, err
@@ -37,12 +38,12 @@ func (r *queryResolver) Todos(ctx context.Context, after *ent.Cursor, first *int
 		)
 }
 
-func (r *queryResolver) Node(ctx context.Context, id int) (ent.Noder, error) {
-	return r.client.Noder(ctx, id)
+func (r *queryResolver) Node(ctx context.Context, id pulid.ID) (ent.Noder, error) {
+	return r.client.Noder(ctx, id, ent.WithNodeType(ent.IDToType))
 }
 
-func (r *queryResolver) Nodes(ctx context.Context, ids []int) ([]ent.Noder, error) {
-	return r.client.Noders(ctx, ids)
+func (r *queryResolver) Nodes(ctx context.Context, ids []pulid.ID) ([]ent.Noder, error) {
+	return r.client.Noders(ctx, ids, ent.WithNodeType(ent.IDToType))
 }
 
 func (r *queryResolver) HelloWorld(ctx context.Context, input model.HelloQueryInput) (*model.HelloQueryResult, error) {

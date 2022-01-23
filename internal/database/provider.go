@@ -8,7 +8,6 @@ import (
 	"entgo.io/ent/dialect"
 	entsql "entgo.io/ent/dialect/sql"
 	"giautm.dev/awesome/ent"
-	"giautm.dev/awesome/ent/migrate"
 	_ "giautm.dev/awesome/ent/runtime"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -31,9 +30,7 @@ func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
 		OnStart: func(ctx context.Context) error {
 			// Run the auto migration tool.
 			logger.Info("Ent Migrating.")
-			err := client.Schema.Create(ctx,
-				migrate.WithGlobalUniqueID(true),
-			)
+			err := client.Schema.Create(ctx)
 			if err != nil {
 				logger.Error(fmt.Sprintf("failed creating schema resources: %v", err))
 				return err

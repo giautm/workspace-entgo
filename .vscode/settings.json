@@ -9,6 +9,7 @@
     "gqlgen",
     "gqlparser",
     "gqlserver",
-    "Noder"
+    "Noder",
+    "PULID"
   ]
 }

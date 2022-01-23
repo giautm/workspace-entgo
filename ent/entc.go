@@ -26,6 +26,7 @@ func main() {
 	err = entc.Generate("./ent/schema", &gen.Config{},
 		entc.Extensions(exEntGQL),
 		entc.TemplateDir("./ent/template"),
+		entc.TemplateDir("./ent/schema/pulid/template"),
 	)
 	if err != nil {
 		log.Fatalf("entc: running ent codegen: %v", err)

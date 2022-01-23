@@ -5,25 +5,30 @@ package ent
 import (
 	"time"
 
+	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
 )
 
 // CreateTodoInput represents a mutation input for creating todos.
 type CreateTodoInput struct {
-	Text      string
-	CreatedAt *time.Time
-	Status    *todo.Status
-	Priority  *int
-	ChildIDs  []int
-	ParentID  *int
+	CreateTime *time.Time
+	UpdateTime *time.Time
+	Text       string
+	Status     *todo.Status
+	Priority   *int
+	ChildIDs   []pulid.ID
+	ParentID   *pulid.ID
 }
 
 // Mutate applies the CreateTodoInput on the TodoCreate builder.
 func (i *CreateTodoInput) Mutate(m *TodoCreate) {
-	m.SetText(i.Text)
-	if v := i.CreatedAt; v != nil {
-		m.SetCreatedAt(*v)
+	if v := i.CreateTime; v != nil {
+		m.SetCreateTime(*v)
 	}
+	if v := i.UpdateTime; v != nil {
+		m.SetUpdateTime(*v)
+	}
+	m.SetText(i.Text)
 	if v := i.Status; v != nil {
 		m.SetStatus(*v)
 	}
@@ -46,17 +51,21 @@ func (c *TodoCreate) SetInput(i CreateTodoInput) *TodoCreate {
 
 // UpdateTodoInput represents a mutation input for updating todos.
 type UpdateTodoInput struct {
+	UpdateTime     *time.Time
 	Text           *string
 	Status         *todo.Status
 	Priority       *int
-	AddChildIDs    []int
-	RemoveChildIDs []int
-	ParentID       *int
+	AddChildIDs    []pulid.ID
+	RemoveChildIDs []pulid.ID
+	ParentID       *pulid.ID
 	ClearParent    bool
 }
 
 // Mutate applies the UpdateTodoInput on the TodoMutation.
 func (i *UpdateTodoInput) Mutate(m *TodoMutation) {
+	if v := i.UpdateTime; v != nil {
+		m.SetUpdateTime(*v)
+	}
 	if v := i.Text; v != nil {
 		m.SetText(*v)
 	}

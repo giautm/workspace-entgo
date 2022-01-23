@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
+	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/errcode"
@@ -144,8 +145,8 @@ type PageInfo struct {
 
 // Cursor of an edge type.
 type Cursor struct {
-	ID    int   `msgpack:"i"`
-	Value Value `msgpack:"v,omitempty"`
+	ID    pulid.ID `msgpack:"i"`
+	Value Value    `msgpack:"v,omitempty"`
 }
 
 // MarshalGQL implements graphql.Marshaler interface.
@@ -436,16 +437,6 @@ var (
 			}
 		},
 	}
-	// TodoOrderFieldCreatedAt orders Todo by created_at.
-	TodoOrderFieldCreatedAt = &TodoOrderField{
-		field: todo.FieldCreatedAt,
-		toCursor: func(t *Todo) Cursor {
-			return Cursor{
-				ID:    t.ID,
-				Value: t.CreatedAt,
-			}
-		},
-	}
 	// TodoOrderFieldStatus orders Todo by status.
 	TodoOrderFieldStatus = &TodoOrderField{
 		field: todo.FieldStatus,
@@ -474,8 +465,6 @@ func (f TodoOrderField) String() string {
 	switch f.field {
 	case todo.FieldText:
 		str = "TEXT"
-	case todo.FieldCreatedAt:
-		str = "CREATED_AT"
 	case todo.FieldStatus:
 		str = "STATUS"
 	case todo.FieldPriority:
@@ -498,8 +487,6 @@ func (f *TodoOrderField) UnmarshalGQL(v interface{}) error {
 	switch str {
 	case "TEXT":
 		*f = *TodoOrderFieldText
-	case "CREATED_AT":
-		*f = *TodoOrderFieldCreatedAt
 	case "STATUS":
 		*f = *TodoOrderFieldStatus
 	case "PRIORITY":

@@ -62,7 +62,8 @@ https://graphql.org/learn/schema/#object-types-and-fields
 """
 type Todo implements Node @key(fields: "id") {
   id: ID!
-  createdAt: Time
+  createTime: Time
+  updateTime: Time
   status: Status!
   priority: Int!
   text: String!

@@ -37,7 +37,7 @@ models:
   # Defines the ID field as Go 'int'.
   ID:
     model:
-      - github.com/99designs/gqlgen/graphql.IntID
+      - giautm.dev/awesome/ent/schema/pulid.ID
   Node:
     model:
       - giautm.dev/awesome/ent.Noder
