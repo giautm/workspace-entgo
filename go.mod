@@ -11,9 +11,7 @@ require (
 	github.com/getsentry/sentry-go v0.11.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-sql-driver/mysql v1.6.0
-	github.com/google/martian v2.1.1-0.20190517191504-25dcb96d9e51+incompatible
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/vektah/gqlparser v1.3.1
 	github.com/vektah/gqlparser/v2 v2.2.0
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
 	go.uber.org/fx v1.14.2
