@@ -18,7 +18,7 @@ type Todo struct {
 func (Todo) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.Time{},
-		pulid.MixinWithPrefix("TD"),
+		pulid.MixinWithIndex(845),
 	}
 }
 

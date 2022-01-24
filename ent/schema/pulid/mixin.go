@@ -22,6 +22,11 @@ func MixinWithPrefix(prefix string) *Mixin {
 	return &Mixin{prefix: prefix}
 }
 
+// MixinWithIndex creates a Mixin that encodes the index as base32 for prefix
+func MixinWithIndex(idx uint64) *Mixin {
+	return MixinWithPrefix(EncodeBase32(idx))
+}
+
 // Mixin defines an ent Mixin that captures the PULID prefix for a type.
 type Mixin struct {
 	mixin.Schema
