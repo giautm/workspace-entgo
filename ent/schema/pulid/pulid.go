@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/oklog/ulid/v2"
@@ -20,17 +21,30 @@ func init() {
 	defaultEntropySource = ulid.Monotonic(rand.Reader, 0)
 }
 
-// newULID returns a new ULID for time.Now() using the default entropy source.
-func newULID() ulid.ULID {
+const separator = '_'
+
+var ErrIncorrectIDFormat = fmt.Errorf("pulid: incorrect id format")
+
+// NewULID returns a new ULID for time.Now() using the default entropy source.
+var NewULID = func() ulid.ULID {
 	return ulid.MustNew(ulid.Timestamp(time.Now()), defaultEntropySource)
 }
 
 // ID implements a PULID - a prefixed ULID.
 type ID string
 
+func ParsePrefix(id ID) (string, error) {
+	idx := strings.IndexRune(string(id), separator)
+	if idx == -1 {
+		return "", ErrIncorrectIDFormat
+	}
+
+	return string(id[:idx]), nil
+}
+
 // MustNew returns a new PULID for time.Now() given a prefix. This uses the default entropy source.
 func MustNew(prefix string) ID {
-	return ID(fmt.Sprintf("%s_%s", prefix, newULID()))
+	return ID(fmt.Sprintf("%s%c%s", prefix, separator, NewULID()))
 }
 
 // UnmarshalGQL implements the graphql.Unmarshaler interface

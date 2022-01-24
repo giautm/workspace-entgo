@@ -5,14 +5,13 @@ package ent
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
 )
 
 // prefixMap maps PULID prefixes to table names.
-var prefixMap = map[pulid.ID]string{
+var prefixMap = map[string]string{
 	"TD": todo.Table,
 }
 
@@ -22,17 +21,15 @@ var prefixMap = map[pulid.ID]string{
 func WithPrefixedULID() NodeOption {
 	return func(o *nodeOptions) {
 		o.nodeType = func(ctx context.Context, id pulid.ID) (string, error) {
-			idx := strings.IndexRune(string(id), '_')
-			if idx == -1 {
-				return "", fmt.Errorf("pulid: incorrect id format")
+			prefix, err := pulid.ParsePrefix(id)
+			if err != nil {
+				return "", err
 			}
 
-			prefix := id[:idx]
-			typ := prefixMap[prefix]
-			if typ == "" {
-				return "", fmt.Errorf("pulid: could not map prefix '%s' to a type", prefix)
+			if typ := prefixMap[prefix]; typ != "" {
+				return typ, nil
 			}
-			return typ, nil
+			return "", fmt.Errorf("pulid: could not map prefix '%s' to a type", prefix)
 		}
 	}
 }
