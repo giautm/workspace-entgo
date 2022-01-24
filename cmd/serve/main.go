@@ -10,6 +10,7 @@ import (
 	pkgsentry "giautm.dev/awesome/pkg/sentry"
 	"giautm.dev/awesome/pkg/server"
 	"github.com/go-chi/chi/v5"
+	"github.com/rs/cors"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 	_ "gocloud.dev/runtimevar/constantvar"
@@ -26,7 +27,18 @@ func NewHandler(logger *zap.Logger, gqlserver *graphql.Server) (http.Handler, er
 	r := chi.NewRouter()
 	r.Route("/", gqlserver.MountRoutes)
 
-	return r, nil
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{
+			http.MethodOptions,
+			http.MethodHead,
+			http.MethodGet,
+			http.MethodPost,
+		},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: false,
+	})
+	return c.Handler(r), nil
 }
 
 // Register mounts our HTTP handler on the mux.
