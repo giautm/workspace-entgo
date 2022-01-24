@@ -5,6 +5,7 @@
     "entgo",
     "entgql",
     "GOARCH",
+    "gocloud",
     "gqlerror",
     "gqlgen",
     "gqlparser",
