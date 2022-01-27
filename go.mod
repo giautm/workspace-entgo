@@ -6,14 +6,14 @@ require (
 	contrib.go.opencensus.io/integrations/ocsql v0.1.7
 	entgo.io/contrib v0.2.1-0.20220119211230-99e4837d54e2
 	entgo.io/ent v0.10.0
-	github.com/99designs/gqlgen v0.15.2-0.20220119135911-986650718267
+	github.com/99designs/gqlgen v0.16.1-0.20220126210710-25c2cdcb12d5
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
 	github.com/getsentry/sentry-go v0.11.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/rs/cors v1.8.2
-	github.com/vektah/gqlparser/v2 v2.2.0
+	github.com/vektah/gqlparser/v2 v2.3.1
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
 	go.uber.org/fx v1.14.2
 	go.uber.org/zap v1.20.0
