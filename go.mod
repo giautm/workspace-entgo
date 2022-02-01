@@ -15,7 +15,7 @@ require (
 	github.com/rs/cors v1.8.2
 	github.com/vektah/gqlparser/v2 v2.3.1
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
-	go.uber.org/fx v1.14.2
+	go.uber.org/fx v1.16.0
 	go.uber.org/zap v1.20.0
 	gocloud.dev v0.24.0
 )

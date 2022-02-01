@@ -182,11 +182,6 @@ func (s *Server) handleQuery() http.Handler {
 	return srv
 }
 
-func NewServeFx(client *ent.Client) (*Server, error) {
-	opts := append(DevelopmentOptions, WithEntTransaction(client))
-	return NewServer(resolver.NewResolver(client), opts...)
-}
-
 func errorPresenter(ctx context.Context, err error) (gqlErr *gqlerror.Error) {
 	defer func() {
 		if errors.Is(err, privacy.Deny) {

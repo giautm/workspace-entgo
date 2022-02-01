@@ -49,10 +49,10 @@ func Register(mux *http.ServeMux, h http.Handler) {
 func main() {
 	app := fx.New(
 		logger.Module,
+		graphql.Module,
 		fx.Provide(
 			pkgsentry.NewSentry,
 			database.NewEntClientFx,
-			graphql.NewServeFx,
 			NewHandler,
 			func(e *ent.Client) *sqlhealth.Checker { return e.HealthCheck() },
 			server.NewMux,
