@@ -15,7 +15,7 @@ require (
 	github.com/rs/cors v1.8.2
 	github.com/vearutop/sentry-go-exporter-opencensus v0.1.0
 	github.com/vektah/gqlparser/v2 v2.3.1
-	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
+	github.com/vmihailenco/msgpack/v5 v5.3.5
 	go.opencensus.io v0.23.0
 	go.uber.org/fx v1.16.0
 	go.uber.org/zap v1.20.0
@@ -51,7 +51,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/oklog/ulid/v2 v2.0.2
 	github.com/swaggest/assertjson v1.6.8 // indirect
-	github.com/vmihailenco/tagparser v0.1.2 // indirect
+	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/dig v1.12.0 // indirect
