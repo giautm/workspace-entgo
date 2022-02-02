@@ -8,7 +8,7 @@ import (
 
 	"giautm.dev/awesome/ent"
 	"giautm.dev/awesome/ent/schema/pulid"
-	"giautm.dev/awesome/internal/graphql/generated"
+	"giautm.dev/awesome/graphql/generated"
 )
 
 func (r *entityResolver) FindTodoByID(ctx context.Context, id pulid.ID) (*ent.Todo, error) {

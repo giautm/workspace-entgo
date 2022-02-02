@@ -5,8 +5,8 @@ import (
 
 	"entgo.io/contrib/entgql"
 	"giautm.dev/awesome/ent"
-	"giautm.dev/awesome/internal/graphql/generated"
-	"giautm.dev/awesome/internal/graphql/resolver"
+	"giautm.dev/awesome/graphql/generated"
+	"giautm.dev/awesome/graphql/resolver"
 	"github.com/99designs/gqlgen-contrib/gqlopencensus"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"

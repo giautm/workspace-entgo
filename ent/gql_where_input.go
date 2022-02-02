@@ -332,7 +332,7 @@ func (i *TodoWhereInput) P() (predicate.Todo, error) {
 	}
 	switch len(predicates) {
 	case 0:
-		return nil, fmt.Errorf("giautm.dev/awesome/ent: empty predicate TodoWhereInput")
+		return nil, fmt.Errorf("empty predicate TodoWhereInput")
 	case 1:
 		return predicates[0], nil
 	default:

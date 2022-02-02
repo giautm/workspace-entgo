@@ -5,6 +5,6 @@ package runtime
 // The schema-stitching logic is generated in giautm.dev/awesome/ent/runtime.go
 
 const (
-	Version = "v0.10.0"                                         // Version of ent codegen.
-	Sum     = "h1:9cBomE1fh+WX34DPYQL7tDNAIvhKa3tXvwxuLyhYCMo=" // Sum of ent codegen.
+	Version = "v0.10.1-0.20220131131809-51663407cff7"           // Version of ent codegen.
+	Sum     = "h1:tlawIAa+gwuXEwWQ7Uql1UMbbhACA0pTivcA4CS+E9k=" // Sum of ent codegen.
 )

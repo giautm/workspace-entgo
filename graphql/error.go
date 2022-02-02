@@ -16,11 +16,13 @@ func recoverFunc(ctx context.Context, err interface{}) (userMessage error) {
 	log := logging.FromContext(ctx)
 	if e, ok := err.(error); ok {
 		hub := sentry.GetHubFromContext(ctx)
+		hub.ConfigureScope(createContextGQL(ctx, e, true))
 		hub.CaptureException(e)
 
 		log.Error("graphql internal failure", zap.Error(e))
 	} else if s, ok := err.(string); ok {
 		hub := sentry.GetHubFromContext(ctx)
+		hub.ConfigureScope(createContextGQL(ctx, errors.New(s), true))
 		hub.CaptureMessage(s)
 
 		log.Error("graphql internal failure", zap.String("err", s))
@@ -36,10 +38,10 @@ func errorPresenter(ctx context.Context, err error) (gqlErr *gqlerror.Error) {
 	// Due to the bellow commit, GQLGen always wraps the error with `gqlerror.Error`
 	// See: https://github.com/99designs/gqlgen/commit/e821b97bfbb922589c9eea649f0415ec3454e446
 	if errInternal := errors.Unwrap(err); errInternal != nil {
-		hub.ConfigureScope(setContextGQL(ctx, err, true))
+		hub.ConfigureScope(createContextGQL(ctx, err, true))
 		err = errInternal
 	} else {
-		hub.ConfigureScope(setContextGQL(ctx, err, false))
+		hub.ConfigureScope(createContextGQL(ctx, err, false))
 	}
 
 	defer func() {
@@ -68,7 +70,7 @@ func errorPresenter(ctx context.Context, err error) (gqlErr *gqlerror.Error) {
 	return gqlerror.ErrorPathf(path, "Sorry, something went wrong")
 }
 
-func setContextGQL(ctx context.Context, err error, markAsInternal bool) func(scope *sentry.Scope) {
+func createContextGQL(ctx context.Context, err error, markAsInternal bool) func(scope *sentry.Scope) {
 	return func(scope *sentry.Scope) {
 		scope.SetTag("component", "graphql")
 
@@ -106,8 +108,6 @@ func setContextGQL(ctx context.Context, err error, markAsInternal bool) func(sco
 			}
 		}
 
-		if len(gql) > 0 {
-			scope.SetContext("GraphQL", gql)
-		}
+		scope.SetContext("GraphQL", gql)
 	}
 }

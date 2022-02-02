@@ -4,7 +4,7 @@ import (
 	"go.uber.org/fx"
 
 	"giautm.dev/awesome/ent"
-	"giautm.dev/awesome/internal/graphql/resolver"
+	"giautm.dev/awesome/graphql/resolver"
 	"giautm.dev/awesome/internal/project"
 )
 

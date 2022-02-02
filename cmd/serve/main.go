@@ -10,8 +10,8 @@ import (
 	_ "gocloud.dev/runtimevar/constantvar"
 	_ "gocloud.dev/runtimevar/filevar"
 
+	"giautm.dev/awesome/graphql"
 	"giautm.dev/awesome/internal/database"
-	"giautm.dev/awesome/internal/graphql"
 	"giautm.dev/awesome/internal/logger"
 	"giautm.dev/awesome/internal/sentry"
 	"giautm.dev/awesome/pkg/server"

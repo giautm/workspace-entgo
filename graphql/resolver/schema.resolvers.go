@@ -9,8 +9,8 @@ import (
 	"giautm.dev/awesome/ent"
 	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
-	"giautm.dev/awesome/internal/graphql/generated"
-	"giautm.dev/awesome/internal/graphql/model"
+	"giautm.dev/awesome/graphql/generated"
+	"giautm.dev/awesome/graphql/model"
 	"giautm.dev/awesome/internal/hello"
 )
 
