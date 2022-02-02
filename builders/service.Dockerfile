@@ -1,4 +1,4 @@
-FROM alpine AS builder
+FROM alpine:3.15.0 AS builder
 RUN apk add --no-cache tzdata
 
 FROM scratch
