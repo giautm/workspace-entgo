@@ -31,20 +31,22 @@ func recoverFunc(ctx context.Context, err interface{}) (userMessage error) {
 
 func errorPresenter(ctx context.Context, err error) (gqlErr *gqlerror.Error) {
 	hub := sentry.CurrentHub()
-	hub.ConfigureScope(setContextGQL(ctx, err))
+
+	// We trying to unwrap one level to check if there is an internal error.
+	// Due to the bellow commit, GQLGen always wraps the error with `gqlerror.Error`
+	// See: https://github.com/99designs/gqlgen/commit/e821b97bfbb922589c9eea649f0415ec3454e446
+	if errInternal := errors.Unwrap(err); errInternal != nil {
+		hub.ConfigureScope(setContextGQL(ctx, err, true))
+		err = errInternal
+	} else {
+		hub.ConfigureScope(setContextGQL(ctx, err, false))
+	}
 
 	defer func() {
 		if errors.Is(err, privacy.Deny) {
 			gqlErr.Message = "Permission denied"
 		}
 	}()
-
-	// We trying to unwrap one level to check if there is an internal error.
-	// Due to the bellow commit, GQLGen always wraps the error with `gqlerror.Error`
-	// See: https://github.com/99designs/gqlgen/commit/e821b97bfbb922589c9eea649f0415ec3454e446
-	if errInternal := errors.Unwrap(err); errInternal != nil {
-		err = errInternal
-	}
 
 	if errors.As(err, &gqlErr) {
 		if gqlErr.Path == nil {
@@ -66,11 +68,13 @@ func errorPresenter(ctx context.Context, err error) (gqlErr *gqlerror.Error) {
 	return gqlerror.ErrorPathf(path, "Sorry, something went wrong")
 }
 
-func setContextGQL(ctx context.Context, err error) func(scope *sentry.Scope) {
+func setContextGQL(ctx context.Context, err error, markAsInternal bool) func(scope *sentry.Scope) {
 	return func(scope *sentry.Scope) {
 		scope.SetTag("component", "graphql")
 
-		gql := make(map[string]interface{})
+		gql := map[string]interface{}{
+			"Internal Error": markAsInternal,
+		}
 
 		var gqlErr *gqlerror.Error
 		if errors.As(err, &gqlErr) {
