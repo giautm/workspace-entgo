@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	contrib.go.opencensus.io/integrations/ocsql v0.1.7
-	entgo.io/contrib v0.2.1-0.20220119211230-99e4837d54e2
-	entgo.io/ent v0.10.0
-	github.com/99designs/gqlgen v0.16.1-0.20220126210710-25c2cdcb12d5
+	entgo.io/contrib v0.2.1-0.20220124192906-9763c9ad9b9c
+	entgo.io/ent v0.10.1-0.20220131131809-51663407cff7
+	github.com/99designs/gqlgen v0.16.1-0.20220131150016-06bbca37286e
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
 	github.com/getsentry/sentry-go v0.12.0
 	github.com/go-chi/chi/v5 v5.0.7
@@ -23,7 +23,7 @@ require (
 )
 
 require (
-	ariga.io/atlas v0.3.2-0.20220120225051-c3fac7d636dd // indirect
+	ariga.io/atlas v0.3.3-0.20220131101532-28a925069338 // indirect
 	cloud.google.com/go v0.99.0 // indirect
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/agnivade/levenshtein v1.1.0 // indirect
