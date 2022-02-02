@@ -6,12 +6,21 @@ import (
 	"os"
 
 	"entgo.io/ent/dialect"
-	entsql "entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/schema"
-	"giautm.dev/awesome/ent"
-	_ "giautm.dev/awesome/ent/runtime"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
+	"gocloud.dev/server/health/sqlhealth"
+
+	"giautm.dev/awesome/ent"
+	_ "giautm.dev/awesome/ent/runtime"
+)
+
+var Module = fx.Options(
+	fx.Provide(NewEntClientFx),
+	fx.Provide(func(e *ent.Client) *sqlhealth.Checker {
+		return e.HealthCheck()
+	}),
 )
 
 func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
@@ -24,7 +33,7 @@ func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
 	}
 	db := cfg.OpenDB()
 
-	drv := entsql.OpenDB(dialect.MySQL, db)
+	drv := sql.OpenDB(dialect.MySQL, db)
 	client := ent.NewClient(ent.Driver(drv))
 
 	lc.Append(fx.Hook{

@@ -6,11 +6,18 @@ import (
 	"gocloud.dev/server/requestlog"
 )
 
-type zapRequestLogger struct {
+type ZapRequestLogger struct {
 	logger *zap.Logger
 }
 
-func (rl *zapRequestLogger) Log(ent *requestlog.Entry) {
+// NewRequestLogger returns a request logger that sends entries to zaplogger.
+func NewRequestLogger(logger *zap.Logger) *ZapRequestLogger {
+	return &ZapRequestLogger{
+		logger: logger,
+	}
+}
+
+func (rl *ZapRequestLogger) Log(ent *requestlog.Entry) {
 	var remoteIP zapcore.Field
 	if ent.RemoteIP != "" {
 		remoteIP = zap.String("remoteIP", ent.RemoteIP)

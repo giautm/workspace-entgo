@@ -8,13 +8,15 @@ require (
 	entgo.io/ent v0.10.0
 	github.com/99designs/gqlgen v0.16.1-0.20220126210710-25c2cdcb12d5
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
-	github.com/getsentry/sentry-go v0.11.0
+	github.com/getsentry/sentry-go v0.12.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/rs/cors v1.8.2
+	github.com/vearutop/sentry-go-exporter-opencensus v0.1.0
 	github.com/vektah/gqlparser/v2 v2.3.1
 	github.com/vmihailenco/msgpack/v5 v5.0.0-beta.9
+	go.opencensus.io v0.23.0
 	go.uber.org/fx v1.16.0
 	go.uber.org/zap v1.20.0
 	gocloud.dev v0.24.0
@@ -26,6 +28,7 @@ require (
 	github.com/agext/levenshtein v1.2.1 // indirect
 	github.com/agnivade/levenshtein v1.1.0 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
+	github.com/bool64/dev v0.1.41 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cncf/xds/go v0.0.0-20211130200136-a8f946100490 // indirect
 	github.com/envoyproxy/go-control-plane v0.10.1 // indirect
@@ -47,9 +50,9 @@ require (
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/oklog/ulid/v2 v2.0.2
+	github.com/swaggest/assertjson v1.6.8 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
-	go.opencensus.io v0.23.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/dig v1.12.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect

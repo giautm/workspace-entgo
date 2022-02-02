@@ -1,16 +1,12 @@
 package graphql
 
 import (
-	"context"
-	"errors"
 	"net/http"
 
 	"entgo.io/contrib/entgql"
-	"entgo.io/ent/privacy"
 	"giautm.dev/awesome/ent"
 	"giautm.dev/awesome/internal/graphql/generated"
 	"giautm.dev/awesome/internal/graphql/resolver"
-	"giautm.dev/awesome/pkg/logging"
 	"github.com/99designs/gqlgen-contrib/gqlopencensus"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -20,8 +16,6 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi/v5"
-	"github.com/vektah/gqlparser/v2/gqlerror"
-	"go.uber.org/zap"
 )
 
 type config struct {
@@ -140,6 +134,7 @@ func (s *Server) MountRoutes(r chi.Router) {
 
 func (s *Server) handleQuery() http.Handler {
 	srv := handler.New(s.schema)
+	srv.SetRecoverFunc(recoverFunc)
 	srv.SetErrorPresenter(errorPresenter)
 	// srv.AddTransport(transport.Websocket{
 	// 	KeepAlivePingInterval: 10 * time.Second,
@@ -180,30 +175,4 @@ func (s *Server) handleQuery() http.Handler {
 	}
 
 	return srv
-}
-
-func errorPresenter(ctx context.Context, err error) (gqlErr *gqlerror.Error) {
-	defer func() {
-		if errors.Is(err, privacy.Deny) {
-			gqlErr.Message = "Permission denied"
-		}
-	}()
-	if errors.As(err, &gqlErr) {
-		if gqlErr.Path == nil {
-			gqlErr.Path = graphql.GetPath(ctx)
-		}
-		return gqlErr
-	}
-
-	path := graphql.GetPath(ctx)
-	log := logging.FromContext(ctx)
-	log.Error("graphql internal failure",
-		zap.Error(err),
-		zap.String("path", path.String()),
-	)
-
-	return &gqlerror.Error{
-		Message: "Sorry, something went wrong",
-		Path:    path,
-	}
 }

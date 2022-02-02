@@ -3,19 +3,18 @@ package main
 import (
 	"net/http"
 
-	"giautm.dev/awesome/ent"
-	"giautm.dev/awesome/internal/database"
-	"giautm.dev/awesome/internal/graphql"
-	"giautm.dev/awesome/internal/logger"
-	pkgsentry "giautm.dev/awesome/pkg/sentry"
-	"giautm.dev/awesome/pkg/server"
 	"github.com/go-chi/chi/v5"
 	"github.com/rs/cors"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 	_ "gocloud.dev/runtimevar/constantvar"
 	_ "gocloud.dev/runtimevar/filevar"
-	"gocloud.dev/server/health/sqlhealth"
+
+	"giautm.dev/awesome/internal/database"
+	"giautm.dev/awesome/internal/graphql"
+	"giautm.dev/awesome/internal/logger"
+	"giautm.dev/awesome/internal/sentry"
+	"giautm.dev/awesome/pkg/server"
 )
 
 // NewHandler constructs a simple HTTP handler. Since it returns an
@@ -49,13 +48,12 @@ func Register(mux *http.ServeMux, h http.Handler) {
 func main() {
 	app := fx.New(
 		logger.Module,
+		database.Module,
 		graphql.Module,
 		fx.Provide(
-			pkgsentry.NewSentry,
-			database.NewEntClientFx,
+			sentry.NewSentryFx,
 			NewHandler,
-			func(e *ent.Client) *sqlhealth.Checker { return e.HealthCheck() },
-			server.NewMux,
+			server.NewMuxFx,
 		),
 		// Since constructors are called lazily, we need some invocations to
 		// kick-start our application. In this case, we'll use Register. Since it

@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	sentryhttp "github.com/getsentry/sentry-go/http"
+	"giautm.dev/awesome/pkg/ocsentry"
+	"github.com/vearutop/sentry-go-exporter-opencensus"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 	"gocloud.dev/server"
@@ -13,7 +14,7 @@ import (
 	"gocloud.dev/server/health/sqlhealth"
 )
 
-// NewMux constructs an HTTP mux. Like NewHandler, it depends on *log.Logger.
+// NewMuxFx constructs an HTTP mux. Like NewHandler, it depends on *log.Logger.
 // However, it also depends on the Fx-specific Lifecycle interface.
 //
 // A Lifecycle is available in every Fx application. It lets objects hook into
@@ -37,17 +38,16 @@ import (
 // replaces the inline goroutine spawning and deferred cleanups with the
 // Lifecycle type.
 //
-// Here, NewMux makes an HTTP mux available to other functions. Since
-// constructors are called lazily, we know that NewMux won't be called unless
+// Here, NewMuxFx makes an HTTP mux available to other functions. Since
+// constructors are called lazily, we know that NewMuxFx won't be called unless
 // some other function wants to register a handler. This makes it easy to use
 // Fx's Lifecycle to start an HTTP server only if we have handlers registered.
-func NewMux(lc fx.Lifecycle, logger *zap.Logger, sentryHandler *sentryhttp.Handler, sqlCheck *sqlhealth.Checker) *http.ServeMux {
+func NewMuxFx(lc fx.Lifecycle, logger *zap.Logger, sentryHandler *ocsentry.Handler, sqlCheck *sqlhealth.Checker) *http.ServeMux {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	logger.Info("Executing NewMux")
 	// First, we construct the mux and server. We don't want to start the server
 	// until all handlers are registered.
 	mux := http.NewServeMux()
@@ -55,8 +55,10 @@ func NewMux(lc fx.Lifecycle, logger *zap.Logger, sentryHandler *sentryhttp.Handl
 	// Create a logger, and assign it to the RequestLogger field of a
 	// server.Options struct.
 	srvOptions := &server.Options{
-		RequestLogger: &zapRequestLogger{logger},
+		Driver:        server.NewDefaultDriver(),
 		HealthChecks:  []health.Checker{sqlCheck},
+		RequestLogger: NewRequestLogger(logger),
+		TraceExporter: sentry.NewExporter(),
 	}
 
 	// Use the constructor function to create the server.
