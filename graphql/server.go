@@ -115,7 +115,8 @@ func NewServer(
 	}
 
 	schema := generated.NewExecutableSchema(generated.Config{
-		Resolvers: resolvers,
+		Resolvers:  resolvers,
+		Directives: directives,
 	})
 
 	return &Server{

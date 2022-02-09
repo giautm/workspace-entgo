@@ -11,10 +11,18 @@ import (
 	"giautm.dev/awesome/ent/todo"
 	"giautm.dev/awesome/graphql/generated"
 	"giautm.dev/awesome/graphql/model"
+	"giautm.dev/awesome/internal/auth"
 	"giautm.dev/awesome/internal/hello"
+	"giautm.dev/awesome/pkg/logging"
+	"go.uber.org/zap"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input ent.CreateTodoInput) (*ent.Todo, error) {
+	token := auth.TokenFromContext(ctx)
+	if token != nil {
+		logger := logging.FromContext(ctx)
+		logger.Info("token", zap.String("rawToken", token.Raw))
+	}
 	return ent.FromContext(ctx).Todo.Create().SetInput(input).Save(ctx)
 }
 

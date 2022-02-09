@@ -11,6 +11,7 @@ require (
 	github.com/getsentry/sentry-go v0.12.0
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/rs/cors v1.8.2
 	github.com/vearutop/sentry-go-exporter-opencensus v0.1.0

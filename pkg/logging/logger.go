@@ -2,6 +2,7 @@ package logging
 
 import (
 	"context"
+	"net/http"
 	"os"
 	"strings"
 	"sync"
@@ -71,7 +72,7 @@ func DefaultLogger() *zap.Logger {
 }
 
 // WithLogger creates a new context with the provided logger attached.
-func WithLogger(ctx context.Context, logger *zap.SugaredLogger) context.Context {
+func WithLogger(ctx context.Context, logger *zap.Logger) context.Context {
 	return context.WithValue(ctx, loggerKey, logger)
 }
 
@@ -184,5 +185,14 @@ func levelEncoder() zapcore.LevelEncoder {
 func timeEncoder() zapcore.TimeEncoder {
 	return func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 		enc.AppendString(t.Format(time.RFC3339Nano))
+	}
+}
+
+func NewMiddleware(logger *zap.Logger) func(http.Handler) http.Handler {
+	return func(h http.Handler) http.Handler {
+		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+			// TODO: attach trace_id/span_id to logger
+			h.ServeHTTP(rw, r.WithContext(WithLogger(r.Context(), logger)))
+		})
 	}
 }

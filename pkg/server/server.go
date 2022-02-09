@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"giautm.dev/awesome/pkg/logging"
 	"giautm.dev/awesome/pkg/ocsentry"
 	"github.com/vearutop/sentry-go-exporter-opencensus"
 	"go.uber.org/fx"
@@ -62,7 +63,7 @@ func NewMuxFx(lc fx.Lifecycle, logger *zap.Logger, sentryHandler *ocsentry.Handl
 	}
 
 	// Use the constructor function to create the server.
-	srv := server.New(sentryHandler.Handle(mux), srvOptions)
+	srv := server.New(sentryHandler.Handle(logging.NewMiddleware(logger)(mux)), srvOptions)
 
 	// If NewMux is called, we know that another function is using the mux. In
 	// that case, we'll use the Lifecycle type to register a Hook that starts

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/rs/cors"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
@@ -11,6 +12,7 @@ import (
 	_ "gocloud.dev/runtimevar/filevar"
 
 	"giautm.dev/awesome/graphql"
+	"giautm.dev/awesome/internal/auth"
 	"giautm.dev/awesome/internal/database"
 	"giautm.dev/awesome/internal/logger"
 	"giautm.dev/awesome/internal/sentry"
@@ -20,10 +22,11 @@ import (
 // NewHandler constructs a simple HTTP handler. Since it returns an
 // http.Handler, Fx will treat NewHandler as the constructor for the
 // http.Handler type.
-func NewHandler(logger *zap.Logger, gqlserver *graphql.Server) (http.Handler, error) {
+func NewHandler(logger *zap.Logger, keyFunc jwt.Keyfunc, gqlserver *graphql.Server) (http.Handler, error) {
 	logger.Info("Executing NewHandler.")
 
 	r := chi.NewRouter()
+	r.Use(auth.NewMiddleware(keyFunc))
 	r.Route("/", gqlserver.MountRoutes)
 
 	c := cors.New(cors.Options{
@@ -52,6 +55,7 @@ func main() {
 		graphql.Module,
 		fx.Provide(
 			sentry.NewSentryFx,
+			auth.NewKeyFuncFromEnv,
 			NewHandler,
 			server.NewMuxFx,
 		),
