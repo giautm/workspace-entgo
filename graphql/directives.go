@@ -15,16 +15,14 @@ var (
 )
 
 func directiveAuth(ctx context.Context, obj interface{}, next graphql.Resolver, requires *model.Role) (res interface{}, err error) {
-	token := auth.TokenFromContext(ctx)
-	if token == nil {
+	claims := auth.ClaimsFromContext(ctx)
+	if claims == nil {
 		return nil, errNotAuthorized
 	}
 
 	if requires != nil && *requires == model.RoleAdmin {
-		if c, ok := token.Claims.(*auth.LegacyClaims); ok {
-			if c.Guard == auth.GuardEmployer {
-				return next(ctx)
-			}
+		if claims.Guard == auth.GuardEmployer {
+			return next(ctx)
 		}
 
 		return nil, errNotAuthorized
