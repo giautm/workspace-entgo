@@ -5,6 +5,7 @@ import (
 
 	"entgo.io/contrib/entgql"
 	"giautm.dev/awesome/ent"
+	"giautm.dev/awesome/graphql/directive"
 	"giautm.dev/awesome/graphql/generated"
 	"giautm.dev/awesome/graphql/resolver"
 	"github.com/99designs/gqlgen-contrib/gqlopencensus"
@@ -115,8 +116,10 @@ func NewServer(
 	}
 
 	schema := generated.NewExecutableSchema(generated.Config{
-		Resolvers:  resolvers,
-		Directives: directives,
+		Resolvers: resolvers,
+		Directives: generated.DirectiveRoot{
+			Auth: directive.Auth,
+		},
 	})
 
 	return &Server{

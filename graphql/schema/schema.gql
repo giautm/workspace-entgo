@@ -2,11 +2,11 @@ interface Node {
   id: ID!
 }
 
-enum Role {
+enum AuthRole {
   ADMIN
 }
 
-directive @auth(requires: Role = ADMIN) on OBJECT | FIELD_DEFINITION
+directive @auth(requires: AuthRole = ADMIN) on OBJECT | FIELD_DEFINITION
 
 """Maps a Time GraphQL scalar to a Go time.Time struct."""
 scalar Time

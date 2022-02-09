@@ -15,6 +15,7 @@ import (
 	"giautm.dev/awesome/ent"
 	"giautm.dev/awesome/ent/schema/pulid"
 	"giautm.dev/awesome/ent/todo"
+	"giautm.dev/awesome/graphql/directive"
 	"giautm.dev/awesome/graphql/model"
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -47,7 +48,7 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
-	Auth func(ctx context.Context, obj interface{}, next graphql.Resolver, requires *model.Role) (res interface{}, err error)
+	Auth func(ctx context.Context, obj interface{}, next graphql.Resolver, requires *directive.AuthRole) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -533,11 +534,11 @@ input TodoWhereInput {
   id: ID!
 }
 
-enum Role {
+enum AuthRole {
   ADMIN
 }
 
-directive @auth(requires: Role = ADMIN) on OBJECT | FIELD_DEFINITION
+directive @auth(requires: AuthRole = ADMIN) on OBJECT | FIELD_DEFINITION
 
 """Maps a Time GraphQL scalar to a Go time.Time struct."""
 scalar Time
@@ -704,10 +705,10 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 func (ec *executionContext) dir_auth_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *model.Role
+	var arg0 *directive.AuthRole
 	if tmp, ok := rawArgs["requires"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("requires"))
-		arg0, err = ec.unmarshalORole2ᚖgiautmᚗdevᚋawesomeᚋgraphqlᚋmodelᚐRole(ctx, tmp)
+		arg0, err = ec.unmarshalOAuthRole2ᚖgiautmᚗdevᚋawesomeᚋgraphqlᚋdirectiveᚐAuthRole(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -5584,6 +5585,22 @@ func (ec *executionContext) marshalN__TypeKind2string(ctx context.Context, sel a
 	return res
 }
 
+func (ec *executionContext) unmarshalOAuthRole2ᚖgiautmᚗdevᚋawesomeᚋgraphqlᚋdirectiveᚐAuthRole(ctx context.Context, v interface{}) (*directive.AuthRole, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var res = new(directive.AuthRole)
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOAuthRole2ᚖgiautmᚗdevᚋawesomeᚋgraphqlᚋdirectiveᚐAuthRole(ctx context.Context, sel ast.SelectionSet, v *directive.AuthRole) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
+}
+
 func (ec *executionContext) unmarshalOBoolean2bool(ctx context.Context, v interface{}) (bool, error) {
 	res, err := graphql.UnmarshalBoolean(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -5739,22 +5756,6 @@ func (ec *executionContext) marshalONode2giautmᚗdevᚋawesomeᚋentᚐNoder(ct
 		return graphql.Null
 	}
 	return ec._Node(ctx, sel, v)
-}
-
-func (ec *executionContext) unmarshalORole2ᚖgiautmᚗdevᚋawesomeᚋgraphqlᚋmodelᚐRole(ctx context.Context, v interface{}) (*model.Role, error) {
-	if v == nil {
-		return nil, nil
-	}
-	var res = new(model.Role)
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalORole2ᚖgiautmᚗdevᚋawesomeᚋgraphqlᚋmodelᚐRole(ctx context.Context, sel ast.SelectionSet, v *model.Role) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return v
 }
 
 func (ec *executionContext) unmarshalOStatus2ᚕgiautmᚗdevᚋawesomeᚋentᚋtodoᚐStatusᚄ(ctx context.Context, v interface{}) ([]todo.Status, error) {

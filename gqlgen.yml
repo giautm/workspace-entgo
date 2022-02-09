@@ -44,3 +44,6 @@ models:
   Status:
     model:
       - giautm.dev/awesome/ent/todo.Status
+  AuthRole:
+    model:
+      - giautm.dev/awesome/graphql/directive.AuthRole
