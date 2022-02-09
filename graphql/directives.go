@@ -10,14 +10,10 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
-var (
-	errNotAuthorized = gqlerror.Errorf("you are not authorized for this resource")
-)
-
 func directiveAuth(ctx context.Context, obj interface{}, next graphql.Resolver, requires *model.Role) (res interface{}, err error) {
 	claims := auth.ClaimsFromContext(ctx)
 	if claims == nil {
-		return nil, errNotAuthorized
+		return nil, gqlerror.Errorf("you are not authorized for this resource")
 	}
 
 	if requires != nil && *requires == model.RoleAdmin {
@@ -25,7 +21,7 @@ func directiveAuth(ctx context.Context, obj interface{}, next graphql.Resolver, 
 			return next(ctx)
 		}
 
-		return nil, errNotAuthorized
+		return nil, gqlerror.Errorf("you are not authorized for this resource")
 	}
 
 	return next(ctx)
