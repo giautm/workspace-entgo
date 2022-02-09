@@ -3,10 +3,16 @@
 package ent
 
 import (
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"gocloud.dev/server/health/sqlhealth"
 )
 
 func (c *Client) HealthCheck() *sqlhealth.Checker {
-	return sqlhealth.New(c.driver.(*sql.Driver).DB())
+	drv := c.driver
+	if d, ok := drv.(*dialect.DebugDriver); ok {
+		drv = d.Driver
+	}
+
+	return sqlhealth.New(drv.(*sql.Driver).DB())
 }
