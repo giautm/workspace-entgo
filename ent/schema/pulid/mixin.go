@@ -7,6 +7,8 @@ import (
 	"entgo.io/ent/schema/mixin"
 )
 
+const ulidLength = 26
+
 // Annotation captures the id prefix for a type.
 type Annotation struct {
 	Prefix string
@@ -45,6 +47,7 @@ func (m Mixin) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("id").
 			GoType(ID("")).
+			MaxLen(len(m.prefix) + 1 + ulidLength).
 			DefaultFunc(func() ID {
 				return MustNew(m.prefix)
 			}),

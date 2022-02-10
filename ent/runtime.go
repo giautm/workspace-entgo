@@ -43,4 +43,6 @@ func init() {
 	todoDescID := todoMixinFields1[0].Descriptor()
 	// todo.DefaultID holds the default value on creation for the id field.
 	todo.DefaultID = todoDescID.Default.(func() pulid.ID)
+	// todo.IDValidator is a validator for the "id" field. It is called by the builders before save.
+	todo.IDValidator = todoDescID.Validators[0].(func(string) error)
 }

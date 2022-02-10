@@ -86,6 +86,8 @@ var (
 	DefaultPriority int
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() pulid.ID
+	// IDValidator is a validator for the "id" field. It is called by the builders before save.
+	IDValidator func(string) error
 )
 
 // Status defines the type for the "status" enum field.

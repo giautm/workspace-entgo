@@ -251,6 +251,11 @@ func (tc *TodoCreate) check() error {
 	if _, ok := tc.mutation.Priority(); !ok {
 		return &ValidationError{Name: "priority", err: errors.New(`ent: missing required field "Todo.priority"`)}
 	}
+	if v, ok := tc.mutation.ID(); ok {
+		if err := todo.IDValidator(string(v)); err != nil {
+			return &ValidationError{Name: "id", err: fmt.Errorf(`ent: validator failed for field "Todo.id": %w`, err)}
+		}
+	}
 	return nil
 }
 

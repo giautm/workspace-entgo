@@ -427,6 +427,26 @@ func (t *TodoQuery) Paginate(
 }
 
 var (
+	// TodoOrderFieldCreateTime orders Todo by create_time.
+	TodoOrderFieldCreateTime = &TodoOrderField{
+		field: todo.FieldCreateTime,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.CreateTime,
+			}
+		},
+	}
+	// TodoOrderFieldUpdateTime orders Todo by update_time.
+	TodoOrderFieldUpdateTime = &TodoOrderField{
+		field: todo.FieldUpdateTime,
+		toCursor: func(t *Todo) Cursor {
+			return Cursor{
+				ID:    t.ID,
+				Value: t.UpdateTime,
+			}
+		},
+	}
 	// TodoOrderFieldText orders Todo by text.
 	TodoOrderFieldText = &TodoOrderField{
 		field: todo.FieldText,
@@ -463,6 +483,10 @@ var (
 func (f TodoOrderField) String() string {
 	var str string
 	switch f.field {
+	case todo.FieldCreateTime:
+		str = "CREATE_TIME"
+	case todo.FieldUpdateTime:
+		str = "UPDATE_TIME"
 	case todo.FieldText:
 		str = "TEXT"
 	case todo.FieldStatus:
@@ -485,6 +509,10 @@ func (f *TodoOrderField) UnmarshalGQL(v interface{}) error {
 		return fmt.Errorf("TodoOrderField %T must be a string", v)
 	}
 	switch str {
+	case "CREATE_TIME":
+		*f = *TodoOrderFieldCreateTime
+	case "UPDATE_TIME":
+		*f = *TodoOrderFieldUpdateTime
 	case "TEXT":
 		*f = *TodoOrderFieldText
 	case "STATUS":

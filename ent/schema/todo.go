@@ -5,7 +5,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/mixin"
 	"giautm.dev/awesome/ent/schema/pulid"
 )
 
@@ -17,7 +16,7 @@ type Todo struct {
 // Mixin returns Todo mixed-in schema.
 func (Todo) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.Time{},
+		Time{},
 		pulid.MixinWithIndex(845),
 	}
 }
