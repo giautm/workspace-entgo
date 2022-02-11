@@ -14,12 +14,6 @@ Maps a Time GraphQL scalar to a Go time.Time struct.
 scalar Time
 
 """
-Define a Relay Cursor type:
-https://relay.dev/graphql/connections.htm#sec-Cursor
-"""
-scalar Cursor
-
-"""
 Define an enumeration type and map it later to Ent enum (Go type).
 https://graphql.org/learn/schema/#enumeration-types
 """
@@ -31,8 +25,8 @@ enum Status {
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
-  startCursor: Cursor
-  endCursor: Cursor
+  startCursor: String
+  endCursor: String
 }
 
 type TodoConnection {
@@ -43,7 +37,7 @@ type TodoConnection {
 
 type TodoEdge {
   node: Todo
-  cursor: Cursor!
+  cursor: String!
 }
 
 """
@@ -134,9 +128,9 @@ Define a query for getting all todos and support the Node interface.
 """
 type Query {
   todos(
-    after: Cursor
+    after: String
     first: Int
-    before: Cursor
+    before: String
     last: Int
     orderBy: TodoOrder
     where: TodoWhereInput

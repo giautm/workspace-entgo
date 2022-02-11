@@ -38,9 +38,36 @@ func (r *mutationResolver) UpdateTodos(ctx context.Context, ids []pulid.ID, inpu
 	return client.Todo.Query().Where(todo.IDIn(ids...)).All(ctx)
 }
 
-func (r *queryResolver) Todos(ctx context.Context, after *ent.Cursor, first *int, before *ent.Cursor, last *int, orderBy *ent.TodoOrder, where *ent.TodoWhereInput) (*ent.TodoConnection, error) {
+func (r *pageInfoResolver) StartCursor(ctx context.Context, obj *ent.PageInfo) (*string, error) {
+	if obj == nil || obj.StartCursor == nil {
+		return nil, nil
+	}
+
+	s := obj.StartCursor.String()
+	return &s, nil
+}
+
+func (r *pageInfoResolver) EndCursor(ctx context.Context, obj *ent.PageInfo) (*string, error) {
+	if obj == nil || obj.EndCursor == nil {
+		return nil, nil
+	}
+
+	s := obj.EndCursor.String()
+	return &s, nil
+}
+
+func (r *queryResolver) Todos(ctx context.Context, after *string, first *int, before *string, last *int, orderBy *ent.TodoOrder, where *ent.TodoWhereInput) (*ent.TodoConnection, error) {
+	afterCur, err := ent.ParseCursorFromString(after)
+	if err != nil {
+		return nil, err
+	}
+	beforeCur, err := ent.ParseCursorFromString(before)
+	if err != nil {
+		return nil, err
+	}
+
 	return r.client.Todo.Query().
-		Paginate(ctx, after, first, before, last,
+		Paginate(ctx, afterCur, first, beforeCur, last,
 			ent.WithTodoOrder(orderBy),
 			ent.WithTodoFilter(where.Filter),
 		)
@@ -52,14 +79,26 @@ func (r *queryResolver) HelloWorld(ctx context.Context, input model.HelloQueryIn
 	}, nil
 }
 
+func (r *todoEdgeResolver) Cursor(ctx context.Context, obj *ent.TodoEdge) (string, error) {
+	return obj.Cursor.String(), nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
+
+// PageInfo returns generated.PageInfoResolver implementation.
+func (r *Resolver) PageInfo() generated.PageInfoResolver { return &pageInfoResolver{r} }
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+// TodoEdge returns generated.TodoEdgeResolver implementation.
+func (r *Resolver) TodoEdge() generated.TodoEdgeResolver { return &todoEdgeResolver{r} }
+
 type mutationResolver struct{ *Resolver }
+type pageInfoResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type todoEdgeResolver struct{ *Resolver }
 
 // !!! WARNING !!!
 // The code below was going to be deleted when updating resolvers. It has been copied here so you have
