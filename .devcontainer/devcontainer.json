@@ -22,6 +22,7 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"esbenp.prettier-vscode",
 		"golang.Go",
 		"graphql.vscode-graphql",
 		"streetsidesoftware.code-spell-checker"
