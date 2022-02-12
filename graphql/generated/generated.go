@@ -512,7 +512,9 @@ enum AuthRole {
 
 directive @auth(requires: AuthRole = ADMIN) on OBJECT | FIELD_DEFINITION
 
-"""Maps a Time GraphQL scalar to a Go time.Time struct."""
+"""
+Maps a Time GraphQL scalar to a Go time.Time struct.
+"""
 scalar Time
 
 """
@@ -548,7 +550,9 @@ type TodoEdge {
   cursor: Cursor!
 }
 
-"""The following enums are matched the entgql annotations in the ent/schema."""
+"""
+The following enums are matched the entgql annotations in the ent/schema.
+"""
 enum TodoOrderField {
   CREATED_AT
   PRIORITY
@@ -629,9 +633,18 @@ type Mutation {
   updateTodos(ids: [ID!]!, input: UpdateTodoInput!): [Todo!]!
 }
 
-"""Define a query for getting all todos and support the Node interface."""
+"""
+Define a query for getting all todos and support the Node interface.
+"""
 type Query {
-  todos(after: Cursor, first: Int, before: Cursor, last: Int, orderBy: TodoOrder, where: TodoWhereInput): TodoConnection
+  todos(
+    after: Cursor
+    first: Int
+    before: Cursor
+    last: Int
+    orderBy: TodoOrder
+    where: TodoWhereInput
+  ): TodoConnection
   # node(id: ID!): Node
   # nodes(ids: [ID!]!): [Node]!
 
