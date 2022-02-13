@@ -511,6 +511,7 @@ enum AuthRole {
 }
 
 directive @auth(requires: AuthRole = ADMIN) on OBJECT | FIELD_DEFINITION
+directive @pulid(prefix: String!) on OBJECT
 
 """
 Maps a Time GraphQL scalar to a Go time.Time struct.
@@ -574,7 +575,7 @@ input TodoOrder {
 Define an object type and map it later to the generated Ent model.
 https://graphql.org/learn/schema/#object-types-and-fields
 """
-type Todo implements Node @key(fields: "id") {
+type Todo implements Node @key(fields: "id") @pulid(prefix: "TD") {
   id: ID!
   createTime: Time
   updateTime: Time

@@ -17,6 +17,12 @@ model:
   filename: ./graphql/model/models_gen.go
   package: model
 
+# custom directives which are not exposed during introspection. These directives are
+# used for code generation only
+directives:
+  pulid:
+    skip_runtime: true
+
 # Where should the resolver implementations go?
 resolver:
   layout: follow-schema
