@@ -6,6 +6,7 @@ import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent/entc"
 	"entgo.io/ent/entc/gen"
+	"giautm.dev/awesome/pkg/gqlfederation"
 	"github.com/99designs/gqlgen/api"
 	"github.com/99designs/gqlgen/codegen/config"
 )
@@ -26,8 +27,12 @@ func main() {
 		log.Fatalf("entc: creating EntGQL extension: %v", err)
 	}
 
+	exFederation, err := gqlfederation.NewExtension()
+	if err != nil {
+		log.Fatalf("entc: creating GQLFederation extension: %v", err)
+	}
 	err = entc.Generate("./ent/schema", &gen.Config{},
-		entc.Extensions(exEntGQL),
+		entc.Extensions(exEntGQL, exFederation),
 		entc.TemplateDir("./ent/template"),
 	)
 	if err != nil {

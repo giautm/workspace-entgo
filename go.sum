@@ -71,8 +71,8 @@ contrib.go.opencensus.io/exporter/stackdriver v0.13.8/go.mod h1:huNtlWx75MwO7qMs
 contrib.go.opencensus.io/integrations/ocsql v0.1.7 h1:G3k7C0/W44zcqkpRSFyjU9f6HZkbwIrL//qqnlqWZ60=
 contrib.go.opencensus.io/integrations/ocsql v0.1.7/go.mod h1:8DsSdjz3F+APR+0z0WkU1aRorQCFfRxvqjUUPMbF3fE=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-entgo.io/contrib v0.2.1-0.20220206153221-2428d59b58ee h1:fo8yqyBd3sNW4eDTCaXGj8FVeg8DLabOx65Zu09fBBQ=
-entgo.io/contrib v0.2.1-0.20220206153221-2428d59b58ee/go.mod h1:oDXgxZMWGHZAQcuty41ndZahRrGKFmZHiSaV7YDjhvM=
+entgo.io/contrib v0.2.1-0.20220214145710-4b15fea7816e h1:COlHDkYEDzbLtZt4do2YmcQhhp0tw3dyonY1HZzxbsg=
+entgo.io/contrib v0.2.1-0.20220214145710-4b15fea7816e/go.mod h1:oDXgxZMWGHZAQcuty41ndZahRrGKFmZHiSaV7YDjhvM=
 entgo.io/ent v0.9.2-0.20211220092907-4d01a56b8de7/go.mod h1:9jjnWS3pUqkDkRXYHkMU3nZlrj9enQJgIeImJyCm0sc=
 entgo.io/ent v0.10.1-0.20220206154802-74e988616abc h1:jS47t8/816MaJoBTsJ2yfv3331GdD8eD3QTywx++ubA=
 entgo.io/ent v0.10.1-0.20220206154802-74e988616abc/go.mod h1:XYxewSGddyTURTlNpLWtHecnXAnPw/vVzocxMRX5AsE=

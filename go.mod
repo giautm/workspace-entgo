@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	contrib.go.opencensus.io/integrations/ocsql v0.1.7
-	entgo.io/contrib v0.2.1-0.20220206153221-2428d59b58ee
+	entgo.io/contrib v0.2.1-0.20220214145710-4b15fea7816e
 	entgo.io/ent v0.10.1-0.20220206154802-74e988616abc
 	github.com/99designs/gqlgen v0.16.1-0.20220131150016-06bbca37286e
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd

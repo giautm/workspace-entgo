@@ -1,0 +1,34 @@
+{{ define "gql_federation" }}
+
+{{ $pkg := base $.Config.Package }}
+
+{{ template "header" $ }}
+{{ template "import" $ }}
+
+{{ $gqlNodes := filterNodes $.Nodes }}
+{{ $idType := findIDType $gqlNodes $.IDType }}
+
+{{- with $annotation := $.Config.Annotations.GQLFederation }}
+	{{- range $n := $annotation.FederatedNodes }}
+		{{- $name := print "FederatedNode" $n }}
+		type {{ $name }} struct {
+			ID {{ $idType }} `json:"id"`
+		}
+
+		// IsEntity implement fedruntime.Entity
+		func ({{ $name }}) IsEntity() {}
+
+		func (n *{{ $name }}) Node(context.Context) (*Node, error) {
+			return &Node{
+				ID:   n.ID,
+				Type: "{{ $n }}",
+			}, nil
+		}
+		{{- end }}
+	{{- end }}
+{{- end }}
+
+{{ define "model/additional/gql_federation" }}
+	// IsEntity implement fedruntime.Entity
+	func ({{ $.Receiver }} {{ $.Name }}) IsEntity() {}
+{{ end }}
