@@ -18,23 +18,15 @@ type Todo struct {
 // Annotations of the schema.
 func (Todo) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entgql.Annotation{
-			RelayConnection: true,
-			GQLDirectives: []entgql.Directive{
-				{
-					Name: "key",
-					Arguments: []entgql.DirectiveArgument{
-						{Name: "fields", Value: "id", Kind: ast.StringValue},
-					},
-				},
-				{
-					Name: "pulid",
-					Arguments: []entgql.DirectiveArgument{
-						{Name: "prefix", Value: "TD", Kind: ast.StringValue},
-					},
-				},
-			},
-		},
+		entgql.RelayConnection(),
+		entgql.Description("Todo is a task that need to done"),
+		entgql.Directives(
+			entgql.NewDirective("key", entgql.DirectiveArgument{
+				Name:  "fields",
+				Value: "id",
+				Kind:  ast.StringValue,
+			}),
+		),
 	}
 }
 

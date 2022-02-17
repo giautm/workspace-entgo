@@ -284,8 +284,8 @@ github.com/getsentry/sentry-go v0.10.0/go.mod h1:kELm/9iCblqUYh+ZRML7PNdCvEuw24w
 github.com/getsentry/sentry-go v0.12.0 h1:era7g0re5iY13bHSdN/xMkyV+5zZppjRVQhZrXCaEIk=
 github.com/getsentry/sentry-go v0.12.0/go.mod h1:NSap0JBYWzHND8oMbyi0+XZhUalc1TBdRL1M71JZW2c=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
-github.com/giautm/ent-contrib v0.0.0-20220217004848-0557d863089f h1:JfoxqB5DxUYXSZ2ONJbZwhOS7IK7rxSpHTKFEovcFvA=
-github.com/giautm/ent-contrib v0.0.0-20220217004848-0557d863089f/go.mod h1:LsmX7adpbKNURIzTbJwjQgQUwG8dMo0+p/3o5+r7a34=
+github.com/giautm/ent-contrib v0.0.0-20220217050355-2a1cf61f2b08 h1:tPZsKDnC/1clTT6QUFPU2bGPGciICsj886VoDexl25s=
+github.com/giautm/ent-contrib v0.0.0-20220217050355-2a1cf61f2b08/go.mod h1:LsmX7adpbKNURIzTbJwjQgQUwG8dMo0+p/3o5+r7a34=
 github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
 github.com/gin-contrib/sse v0.1.0/go.mod h1:RHrZQHXnP2xjPF+u1gW/2HnVO7nvIa9PG3Gm+fLHvGI=
 github.com/gin-gonic/gin v1.4.0/go.mod h1:OW2EZn3DO8Ln9oIKOvM++LBO+5UPHJJDH72/q/3rZdM=

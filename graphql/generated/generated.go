@@ -626,7 +626,10 @@ enum Status {
 	COMPLETED
 }
 scalar Time
-type Todo implements Node @key(fields: "id") @pulid(prefix: "TD") {
+"""
+Todo is a task that need to done
+"""
+type Todo implements Node @pulid(prefix: "TD") @key(fields: "id") {
 	id: ID!
 	createTime: Time!
 	updateTime: Time!
@@ -662,7 +665,7 @@ type TodoEdge {
 	cursor: Cursor!
 }
 input TodoOrder {
-	direction: OrderDirection!
+	direction: OrderDirection! = ASC
 	field: TodoOrderField!
 }
 enum TodoOrderField {
@@ -3237,6 +3240,10 @@ func (ec *executionContext) unmarshalInputTodoOrder(ctx context.Context, obj int
 	asMap := map[string]interface{}{}
 	for k, v := range obj.(map[string]interface{}) {
 		asMap[k] = v
+	}
+
+	if _, present := asMap["direction"]; !present {
+		asMap["direction"] = "ASC"
 	}
 
 	for k, v := range asMap {

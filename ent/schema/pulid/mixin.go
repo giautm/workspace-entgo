@@ -1,10 +1,12 @@
 package pulid
 
 import (
+	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
+	"github.com/vektah/gqlparser/v2/ast"
 )
 
 const ulidLength = 26
@@ -39,6 +41,13 @@ type Mixin struct {
 func (m Mixin) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		Annotation{Prefix: m.prefix},
+		entgql.Directives(
+			entgql.NewDirective("pulid", entgql.DirectiveArgument{
+				Name:  "prefix",
+				Value: m.prefix,
+				Kind:  ast.StringValue,
+			}),
+		),
 	}
 }
 

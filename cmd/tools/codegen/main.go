@@ -20,7 +20,7 @@ func main() {
 		log.Fatalf("entc: failed loading ent graph: %v", err)
 	}
 
-	entGQLPlugin, err := plugin.New(graph, plugin.WithDebug())
+	entGQLPlugin, err := plugin.New(graph)
 	if err != nil {
 		log.Fatalf("entc: creating EntGQL plugin: %v", err)
 	}

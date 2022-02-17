@@ -70,4 +70,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace entgo.io/contrib => github.com/giautm/ent-contrib v0.0.0-20220217004848-0557d863089f
+replace entgo.io/contrib => github.com/giautm/ent-contrib v0.0.0-20220217050355-2a1cf61f2b08
