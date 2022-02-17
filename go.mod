@@ -6,7 +6,7 @@ require (
 	contrib.go.opencensus.io/integrations/ocsql v0.1.7
 	entgo.io/contrib v0.2.1-0.20220214145710-4b15fea7816e
 	entgo.io/ent v0.10.1-0.20220206154802-74e988616abc
-	github.com/99designs/gqlgen v0.16.1-0.20220131150016-06bbca37286e
+	github.com/99designs/gqlgen v0.16.1-0.20220209020931-d7da5b0d3b3c
 	github.com/99designs/gqlgen-contrib v0.1.1-0.20200601100547-7a955d321bbd
 	github.com/getsentry/sentry-go v0.12.0
 	github.com/go-chi/chi/v5 v5.0.7
@@ -69,3 +69,5 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace entgo.io/contrib => github.com/giautm/ent-contrib v0.0.0-20220217004848-0557d863089f

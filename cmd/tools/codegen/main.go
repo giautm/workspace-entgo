@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"entgo.io/contrib/entgql"
+	"entgo.io/contrib/entgql/plugin"
 	"entgo.io/ent/entc"
 	"entgo.io/ent/entc/gen"
 	"giautm.dev/awesome/pkg/gqlfederation"
@@ -14,8 +15,19 @@ import (
 const gqlgenConfigFile = "./gqlgen.yml"
 
 func main() {
-	gqlgenOpts := []api.Option{}
+	graph, err := entc.LoadGraph("./ent/schema", &gen.Config{})
+	if err != nil {
+		log.Fatalf("entc: failed loading ent graph: %v", err)
+	}
 
+	entGQLPlugin, err := plugin.New(graph, plugin.WithDebug())
+	if err != nil {
+		log.Fatalf("entc: creating EntGQL plugin: %v", err)
+	}
+
+	gqlgenOpts := []api.Option{
+		api.PrependPlugin(entGQLPlugin),
+	}
 	exEntGQL, err := entgql.NewExtension(
 		entgql.WithWhereFilters(true),
 		entgql.WithConfigPath(gqlgenConfigFile, gqlgenOpts...),

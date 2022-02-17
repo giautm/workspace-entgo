@@ -3,14 +3,39 @@ package schema
 import (
 	"entgo.io/contrib/entgql"
 	"entgo.io/ent"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"giautm.dev/awesome/ent/schema/pulid"
+	"github.com/vektah/gqlparser/v2/ast"
 )
 
 // Todo holds the schema definition for the Todo entity.
 type Todo struct {
 	ent.Schema
+}
+
+// Annotations of the schema.
+func (Todo) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entgql.Annotation{
+			RelayConnection: true,
+			GQLDirectives: []entgql.Directive{
+				{
+					Name: "key",
+					Arguments: []entgql.DirectiveArgument{
+						{Name: "fields", Value: "id", Kind: ast.StringValue},
+					},
+				},
+				{
+					Name: "pulid",
+					Arguments: []entgql.DirectiveArgument{
+						{Name: "prefix", Value: "TD", Kind: ast.StringValue},
+					},
+				},
+			},
+		},
+	}
 }
 
 // Mixin returns Todo mixed-in schema.
@@ -50,9 +75,7 @@ func (Todo) Fields() []ent.Field {
 func (Todo) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("parent", Todo.Type).
-			Annotations(entgql.Bind()).
 			Unique().
-			From("children").
-			Annotations(entgql.Bind()),
+			From("children"),
 	}
 }

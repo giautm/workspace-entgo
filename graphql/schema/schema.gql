@@ -1,7 +1,3 @@
-interface Node {
-  id: ID!
-}
-
 enum AuthRole {
   ADMIN
 }
@@ -9,75 +5,7 @@ enum AuthRole {
 directive @auth(requires: AuthRole = ADMIN) on OBJECT | FIELD_DEFINITION
 directive @pulid(prefix: String!) on OBJECT
 
-"""
-Maps a Time GraphQL scalar to a Go time.Time struct.
-"""
-scalar Time
-
-"""
-Define a Relay Cursor type:
-https://relay.dev/graphql/connections.htm#sec-Cursor
-"""
-scalar Cursor
-
-"""
-Define an enumeration type and map it later to Ent enum (Go type).
-https://graphql.org/learn/schema/#enumeration-types
-"""
-enum Status {
-  IN_PROGRESS
-  COMPLETED
-}
-
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: Cursor
-  endCursor: Cursor
-}
-
-type TodoConnection {
-  totalCount: Int!
-  pageInfo: PageInfo!
-  edges: [TodoEdge]
-}
-
-type TodoEdge {
-  node: Todo
-  cursor: Cursor!
-}
-
-"""
-The following enums are matched the entgql annotations in the ent/schema.
-"""
-enum TodoOrderField {
-  CREATED_AT
-  PRIORITY
-  STATUS
-  TEXT
-}
-
-enum OrderDirection {
-  ASC
-  DESC
-}
-
-input TodoOrder {
-  direction: OrderDirection!
-  field: TodoOrderField
-}
-
-"""
-Define an object type and map it later to the generated Ent model.
-https://graphql.org/learn/schema/#object-types-and-fields
-"""
-type Todo implements Node @key(fields: "id") @pulid(prefix: "TD") {
-  id: ID!
-  createTime: Time
-  updateTime: Time
-  status: Status!
-  priority: Int!
-  text: String!
+extend type Todo {
   parent: Todo
   children: [Todo!]
 }
