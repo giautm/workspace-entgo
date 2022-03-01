@@ -19,11 +19,13 @@ var (
 	authContextKey authContext
 )
 
+// TokenFromContext returns the token from the context
 func TokenFromContext(ctx context.Context) *jwt.Token {
 	token, _ := ctx.Value(authContextKey).(*jwt.Token)
 	return token
 }
 
+// WithToken returns a new context with the token
 func WithToken(ctx context.Context, token *jwt.Token) context.Context {
 	if token == nil {
 		return ctx
@@ -32,6 +34,7 @@ func WithToken(ctx context.Context, token *jwt.Token) context.Context {
 	return context.WithValue(ctx, authContextKey, token)
 }
 
+// NewKeyFuncFromEnv returns a keyfunc from the environment
 func NewKeyFuncFromEnv() (jwt.Keyfunc, error) {
 	key := os.Getenv("JWT_SECRET")
 	if key == "" {
@@ -41,6 +44,7 @@ func NewKeyFuncFromEnv() (jwt.Keyfunc, error) {
 	return KeyFuncHMAC([]byte(key)), nil
 }
 
+// KeyFuncHMAC returns a keyfunc for HMAC
 func KeyFuncHMAC(secret []byte) jwt.Keyfunc {
 	return func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -51,6 +55,7 @@ func KeyFuncHMAC(secret []byte) jwt.Keyfunc {
 	}
 }
 
+// NewMiddleware returns a new middleware
 func NewMiddleware(keyFunc jwt.Keyfunc) func(h http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {

@@ -12,6 +12,7 @@ import (
 	"go.uber.org/fx"
 )
 
+// NewSentryFx is provider for sentry handler
 func NewSentryFx(lc fx.Lifecycle) (*ocsentry.Handler, error) {
 	clientOpts := sentry.ClientOptions{
 		TracesSampleRate: 0.2,

@@ -8,11 +8,14 @@ import (
 	"entgo.io/ent/entc/gen"
 )
 
+// GQLFederationAnnotation is the annotation key for the extension.
 const GQLFederationAnnotation = "GQLFederation"
 
 var (
+	// GQLFederationTemplate is the template for GQLFederation.
 	GQLFederationTemplate = parseT("template/gql_federation.tmpl")
 
+	// AllTemplates is the list templates of the extension.
 	AllTemplates = []*gen.Template{
 		GQLFederationTemplate,
 	}
@@ -28,10 +31,12 @@ func parseT(path string) *gen.Template {
 }
 
 type (
+	// Config is the configuration of the extension.
 	Config struct {
 		FederatedNodes []string
 	}
 
+	// Extension is the extension of the Ent.
 	Extension struct {
 		entc.DefaultExtension
 
@@ -49,6 +54,7 @@ var (
 	_ entc.Extension = (*Extension)(nil)
 )
 
+// WithFederatedNodes return the option for setting the federated nodes.
 func WithFederatedNodes(nodes ...string) ExtensionOption {
 	return func(e *Extension) error {
 		if e.cfg == nil {
@@ -60,6 +66,7 @@ func WithFederatedNodes(nodes ...string) ExtensionOption {
 	}
 }
 
+// NewExtension creates a new Federation extension.
 func NewExtension(opts ...ExtensionOption) (*Extension, error) {
 	ex := &Extension{templates: AllTemplates}
 	for _, opt := range opts {

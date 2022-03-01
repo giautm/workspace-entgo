@@ -13,9 +13,9 @@ import (
 	"gocloud.dev/server/health/sqlhealth"
 
 	"giautm.dev/awesome/ent"
-	_ "giautm.dev/awesome/ent/runtime"
 )
 
+// Module exports the database module.
 var Module = fx.Options(
 	fx.Provide(NewEntClientFx),
 	fx.Provide(func(e *ent.Client) *sqlhealth.Checker {
@@ -23,6 +23,7 @@ var Module = fx.Options(
 	}),
 )
 
+// NewEntClientFx returns a new ent.Client.
 func NewEntClientFx(lc fx.Lifecycle, logger *zap.Logger) (*ent.Client, error) {
 	cfg := Config{
 		Name:     os.Getenv("DB_NAME"),

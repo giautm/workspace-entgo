@@ -8,10 +8,12 @@ import (
 	"giautm.dev/awesome/internal/project"
 )
 
+// Module exports the graphql module.
 var Module = fx.Options(
 	fx.Provide(NewServeFx),
 )
 
+// NewServeFx returns a new graphql server.
 func NewServeFx(client *ent.Client) (*Server, error) {
 	opts := ProductionOptions
 	if project.DevMode() {

@@ -11,6 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// Module exports the logger module.
 var Module = fx.Options(
 	fx.Provide(NewLoggerFx),
 	fx.WithLogger(func(logger *zap.Logger) fxevent.Logger {
@@ -18,6 +19,7 @@ var Module = fx.Options(
 	}),
 )
 
+// NewLoggerFx returns a new logger.
 func NewLoggerFx(lc fx.Lifecycle) (*zap.Logger, error) {
 	logger, err := logging.NewLoggerFromEnv()
 	if err != nil {

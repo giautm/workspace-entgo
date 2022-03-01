@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Config is the database configuration.
 type Config struct {
 	Name     string `env:"DB_NAME" json:",omitempty"`
 	User     string `env:"DB_USER" json:",omitempty"`
@@ -13,10 +14,12 @@ type Config struct {
 	Password string `env:"DB_PASSWORD" json:"-"` // ignored by zap's JSON formatter
 }
 
+// Database implements the Database interface.
 func (c *Config) DatabaseConfig() *Config {
 	return c
 }
 
+// ConnectionURL returns the connection URL.
 func (c *Config) ConnectionURL() string {
 	if c == nil {
 		return ""
@@ -27,6 +30,7 @@ func (c *Config) ConnectionURL() string {
 	)
 }
 
+// OpenDB returns the database connection.
 func (c *Config) OpenDB() *sql.DB {
 	return sql.OpenDB(TraceConnector{
 		DSN: c.ConnectionURL(),

@@ -188,6 +188,7 @@ func timeEncoder() zapcore.TimeEncoder {
 	}
 }
 
+// NewMiddleware attaches the logger to the request context.
 func NewMiddleware(logger *zap.Logger) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {

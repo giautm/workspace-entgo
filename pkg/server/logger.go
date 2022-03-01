@@ -6,6 +6,7 @@ import (
 	"gocloud.dev/server/requestlog"
 )
 
+// ZapRequestLogger is a request logger that sends entries to zaplogger.
 type ZapRequestLogger struct {
 	logger *zap.Logger
 }
@@ -17,6 +18,7 @@ func NewRequestLogger(logger *zap.Logger) *ZapRequestLogger {
 	}
 }
 
+// Log implements requestlog.Logger.
 func (rl *ZapRequestLogger) Log(ent *requestlog.Entry) {
 	var remoteIP zapcore.Field
 	if ent.RemoteIP != "" {

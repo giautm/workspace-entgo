@@ -23,6 +23,7 @@ func init() {
 
 const separator = '_'
 
+// ErrIncorrectIDFormat is returned when the ID is not in the correct format.
 var ErrIncorrectIDFormat = fmt.Errorf("pulid: incorrect id format")
 
 // NewULID returns a new ULID for time.Now() using the default entropy source.
@@ -33,6 +34,7 @@ var NewULID = func() ulid.ULID {
 // ID implements a PULID - a prefixed ULID.
 type ID string
 
+// ParsePrefix return the prefix from a Prefixed-ULID.
 func ParsePrefix(id ID) (string, error) {
 	idx := strings.IndexRune(string(id), separator)
 	if idx == -1 {

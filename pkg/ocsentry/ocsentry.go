@@ -77,6 +77,7 @@ func (h *Handler) HandleFunc(handler http.HandlerFunc) http.HandlerFunc {
 	return h.handle(handler)
 }
 
+// WithSpanContext returns a SpanOption that sets trace information from the SpanContext.
 func WithSpanContext(ctx trace.SpanContext) sentry.SpanOption {
 	return func(s *sentry.Span) {
 		s.SpanID = sentry.SpanID(ctx.SpanID)

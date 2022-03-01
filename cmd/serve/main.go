@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	_ "giautm.dev/awesome/ent/runtime"
 	"github.com/go-chi/chi/v5"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/rs/cors"

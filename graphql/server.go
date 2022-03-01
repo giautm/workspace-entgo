@@ -30,8 +30,10 @@ type config struct {
 	persistedQueryCacheSize int
 }
 
+// Option is the GQL server option.
 type Option func(*config) error
 
+// WithEntTransaction return the option for enable playground endpoint
 func WithPlayground() Option {
 	return func(c *config) error {
 		c.playground = true
@@ -39,6 +41,7 @@ func WithPlayground() Option {
 	}
 }
 
+// WithEntTransaction return the option setting Ent client using for Mutation
 func WithEntTransaction(client *ent.Client) Option {
 	return func(c *config) error {
 		c.entClient = client
@@ -46,6 +49,7 @@ func WithEntTransaction(client *ent.Client) Option {
 	}
 }
 
+// WithEnableIntrospection return the option for enable introspection query
 func WithEnableIntrospection() Option {
 	return func(c *config) error {
 		c.introspection = true
@@ -53,6 +57,7 @@ func WithEnableIntrospection() Option {
 	}
 }
 
+// WithOpencensus return the option for enable Opencensus integration
 func WithOpencensus() Option {
 	return func(c *config) error {
 		c.opencensus = true
@@ -60,6 +65,7 @@ func WithOpencensus() Option {
 	}
 }
 
+// WithApolloTracing return the option for enable Apollo Tracing
 func WithApolloTracing() Option {
 	return func(c *config) error {
 		c.apollotracing = true
@@ -67,6 +73,7 @@ func WithApolloTracing() Option {
 	}
 }
 
+// WithQueryCache return the option for set the query cache size
 func WithQueryCache(size int) Option {
 	return func(c *config) error {
 		c.queryCacheSize = size
@@ -74,6 +81,7 @@ func WithQueryCache(size int) Option {
 	}
 }
 
+// WithAutomaticPersistedQuery return the option for set the persisted query cache size
 func WithAutomaticPersistedQuery(size int) Option {
 	return func(c *config) error {
 		c.persistedQueryCacheSize = size
@@ -82,11 +90,13 @@ func WithAutomaticPersistedQuery(size int) Option {
 }
 
 var (
+	// ProductionOptions is options for production mode
 	ProductionOptions = []Option{
 		WithAutomaticPersistedQuery(1000),
 		WithOpencensus(),
 		WithQueryCache(1000),
 	}
+	// DevelopmentOptions is options for development mode
 	DevelopmentOptions = append(ProductionOptions,
 		WithApolloTracing(),
 		WithAutomaticPersistedQuery(0),
@@ -96,11 +106,13 @@ var (
 	)
 )
 
+// Server is the GraphQL server.
 type Server struct {
 	cfg    *config
 	schema graphql.ExecutableSchema
 }
 
+// NewServer returns a new GraphQL server.
 func NewServer(
 	resolvers *resolver.Resolver,
 	opts ...Option,
