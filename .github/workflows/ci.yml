@@ -9,28 +9,30 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run linters
-        uses: golangci/golangci-lint-action@v2.5.2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
-          version: v1.42.1
-          args: --verbose
-  generate-cmp:
+          go-version: 1.17
+      - name: Run linters
+        uses: golangci/golangci-lint-action@v3.1.0
+        with:
+          version: v1.45.2
+  generate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
-          go-version: '1.17'
-      - uses: actions/cache@v2.1.5
+          go-version: '1.18'
+      - uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      - name: run "go generate ./..."
+      - name: Run go generate
         run: go generate ./...
-      - name: Verify generated files are checked in properly
+      - name: Check generated files
         run: |
           status=$(git status --porcelain)
           if [ -n "$status" ]; then
@@ -42,21 +44,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: ['1.17']
+        go: ['1.17', '1.18']
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go }}
-      - uses: actions/cache@v2.1.5
+      - uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Run ent tests
-        run: go test -race ./...
         working-directory: ent
-      - name: Run GraphQL tests
         run: go test -race ./...
+      - name: Run GraphQL tests
         working-directory: graphql
+        run: go test -race ./...
