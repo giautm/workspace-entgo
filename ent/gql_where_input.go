@@ -13,9 +13,10 @@ import (
 
 // TodoWhereInput represents a where input for filtering Todo queries.
 type TodoWhereInput struct {
-	Not *TodoWhereInput   `json:"not,omitempty"`
-	Or  []*TodoWhereInput `json:"or,omitempty"`
-	And []*TodoWhereInput `json:"and,omitempty"`
+	Predicates []predicate.Todo  `json:"-"`
+	Not        *TodoWhereInput   `json:"not,omitempty"`
+	Or         []*TodoWhereInput `json:"or,omitempty"`
+	And        []*TodoWhereInput `json:"and,omitempty"`
 
 	// "id" field predicates.
 	ID      *pulid.ID  `json:"id,omitempty"`
@@ -87,6 +88,11 @@ type TodoWhereInput struct {
 	HasParentWith []*TodoWhereInput `json:"hasParentWith,omitempty"`
 }
 
+// AddPredicates adds custom predicates to the where input to be used during the filtering phase.
+func (i *TodoWhereInput) AddPredicates(predicates ...predicate.Todo) {
+	i.Predicates = append(i.Predicates, predicates...)
+}
+
 // Filter applies the TodoWhereInput filter on the TodoQuery builder.
 func (i *TodoWhereInput) Filter(q *TodoQuery) (*TodoQuery, error) {
 	if i == nil {
@@ -146,6 +152,7 @@ func (i *TodoWhereInput) P() (predicate.Todo, error) {
 		}
 		predicates = append(predicates, todo.And(and...))
 	}
+	predicates = append(predicates, i.Predicates...)
 	if i.ID != nil {
 		predicates = append(predicates, todo.IDEQ(*i.ID))
 	}

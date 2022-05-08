@@ -2,13 +2,10 @@ enum AuthRole {
   ADMIN
 }
 
+scalar Time
+
 directive @auth(requires: AuthRole = ADMIN) on OBJECT | FIELD_DEFINITION
 directive @pulid(prefix: String!) on OBJECT
-
-extend type Todo {
-  parent: Todo
-  children: [Todo!]
-}
 
 """
 Define an input type for the mutation below.
@@ -58,20 +55,6 @@ type Mutation {
   updateTodos(ids: [ID!]!, input: UpdateTodoInput!): [Todo!]!
 }
 
-"""
-Define a query for getting all todos and support the Node interface.
-"""
-type Query {
-  todos(
-    after: Cursor
-    first: Int
-    before: Cursor
-    last: Int
-    orderBy: TodoOrder
-    where: TodoWhereInput
-  ): TodoConnection
-  # node(id: ID!): Node
-  # nodes(ids: [ID!]!): [Node]!
-
+extend type Query {
   helloWorld(input: HelloQueryInput!): HelloQueryResult!
 }

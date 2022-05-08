@@ -38,14 +38,6 @@ func (r *mutationResolver) UpdateTodos(ctx context.Context, ids []pulid.ID, inpu
 	return client.Todo.Query().Where(todo.IDIn(ids...)).All(ctx)
 }
 
-func (r *queryResolver) Todos(ctx context.Context, after *ent.Cursor, first *int, before *ent.Cursor, last *int, orderBy *ent.TodoOrder, where *ent.TodoWhereInput) (*ent.TodoConnection, error) {
-	return r.client.Todo.Query().
-		Paginate(ctx, after, first, before, last,
-			ent.WithTodoOrder(orderBy),
-			ent.WithTodoFilter(where.Filter),
-		)
-}
-
 func (r *queryResolver) HelloWorld(ctx context.Context, input model.HelloQueryInput) (*model.HelloQueryResult, error) {
 	return &model.HelloQueryResult{
 		Message: hello.Hello(input.Name),
@@ -55,8 +47,4 @@ func (r *queryResolver) HelloWorld(ctx context.Context, input model.HelloQueryIn
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
-// Query returns generated.QueryResolver implementation.
-func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
-
 type mutationResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }

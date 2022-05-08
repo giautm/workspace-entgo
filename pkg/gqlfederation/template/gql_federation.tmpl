@@ -5,8 +5,8 @@
 {{ template "header" $ }}
 {{ template "import" $ }}
 
-{{ $gqlNodes := filterNodes $.Nodes }}
-{{ $idType := findIDType $gqlNodes $.IDType }}
+{{ $gqlNodes := filterNodes $.Nodes (skipMode "type") }}
+{{ $idType := gqlIDType $gqlNodes $.IDType }}
 
 {{- with $annotation := $.Config.Annotations.GQLFederation }}
 	{{- range $n := $annotation.FederatedNodes }}

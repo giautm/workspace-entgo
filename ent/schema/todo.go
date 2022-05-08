@@ -19,7 +19,6 @@ type Todo struct {
 func (Todo) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entgql.RelayConnection(),
-		entgql.Description("Todo is a task that need to done"),
 		entgql.Directives(
 			entgql.NewDirective("key", entgql.DirectiveArgument{
 				Name:  "fields",
@@ -27,6 +26,7 @@ func (Todo) Annotations() []schema.Annotation {
 				Kind:  ast.StringValue,
 			}),
 		),
+		entgql.QueryField(),
 	}
 }
 
@@ -68,6 +68,7 @@ func (Todo) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("parent", Todo.Type).
 			Unique().
-			From("children"),
+			From("children").
+			Annotations(entgql.RelayConnection()),
 	}
 }

@@ -162,7 +162,7 @@ func (c *Client) newNodeOpts(opts []NodeOption) *nodeOptions {
 // be derived from the id value according to the universal-id configuration.
 //
 //		c.Noder(ctx, id)
-//		c.Noder(ctx, id, ent.WithNodeType(pet.Table))
+//		c.Noder(ctx, id, ent.WithNodeType(typeResolver))
 //
 func (c *Client) Noder(ctx context.Context, id pulid.ID, opts ...NodeOption) (_ Noder, err error) {
 	defer func() {
@@ -180,10 +180,17 @@ func (c *Client) Noder(ctx context.Context, id pulid.ID, opts ...NodeOption) (_ 
 func (c *Client) noder(ctx context.Context, table string, id pulid.ID) (Noder, error) {
 	switch table {
 	case todo.Table:
-		n, err := c.Todo.Query().
-			Where(todo.ID(id)).
-			CollectFields(ctx, "Todo").
-			Only(ctx)
+		var uid pulid.ID
+		if err := uid.UnmarshalGQL(id); err != nil {
+			return nil, err
+		}
+		query := c.Todo.Query().
+			Where(todo.ID(uid))
+		query, err := query.CollectFields(ctx, "Todo")
+		if err != nil {
+			return nil, err
+		}
+		n, err := query.Only(ctx)
 		if err != nil {
 			return nil, err
 		}
@@ -262,10 +269,13 @@ func (c *Client) noders(ctx context.Context, table string, ids []pulid.ID) ([]No
 	}
 	switch table {
 	case todo.Table:
-		nodes, err := c.Todo.Query().
-			Where(todo.IDIn(ids...)).
-			CollectFields(ctx, "Todo").
-			All(ctx)
+		query := c.Todo.Query().
+			Where(todo.IDIn(ids...))
+		query, err := query.CollectFields(ctx, "Todo")
+		if err != nil {
+			return nil, err
+		}
+		nodes, err := query.All(ctx)
 		if err != nil {
 			return nil, err
 		}
