@@ -18,10 +18,17 @@ func (Time) Fields() []ent.Field {
 		field.Time("create_time").
 			Default(time.Now).
 			Immutable().
-			Annotations(entgql.OrderField("CREATE_TIME")),
+			Annotations(
+				entgql.OrderField("CREATE_TIME"),
+				entgql.Skip(entgql.SkipMutationCreateInput),
+			),
 		field.Time("update_time").
 			Default(time.Now).
 			UpdateDefault(time.Now).
-			Annotations(entgql.OrderField("UPDATE_TIME")),
+			Annotations(
+				entgql.OrderField("UPDATE_TIME"),
+				entgql.Skip(entgql.SkipMutationCreateInput),
+				entgql.Skip(entgql.SkipMutationUpdateInput),
+			),
 	}
 }
