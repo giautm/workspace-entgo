@@ -12,7 +12,7 @@ import (
 )
 
 func (r *entityResolver) FindTodoByID(ctx context.Context, id pulid.ID) (*ent.Todo, error) {
-	todo, err := r.client.Todo.Get(ctx, id)
+	todo, err := ent.FromContext(ctx).Todo.Get(ctx, id)
 	return todo, ent.MaskNotFound(err)
 }
 

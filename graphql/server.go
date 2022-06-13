@@ -20,7 +20,6 @@ import (
 )
 
 type config struct {
-	entClient     *ent.Client
 	apollotracing bool
 	introspection bool
 	opencensus    bool
@@ -37,14 +36,6 @@ type Option func(*config) error
 func WithPlayground() Option {
 	return func(c *config) error {
 		c.playground = true
-		return nil
-	}
-}
-
-// WithEntTransaction return the option setting Ent client using for Mutation
-func WithEntTransaction(client *ent.Client) Option {
-	return func(c *config) error {
-		c.entClient = client
 		return nil
 	}
 }
@@ -109,16 +100,17 @@ var (
 // Server is the GraphQL server.
 type Server struct {
 	cfg    *config
+	ent    *ent.Client
 	schema graphql.ExecutableSchema
 }
 
 // NewServer returns a new GraphQL server.
 func NewServer(
 	resolvers *resolver.Resolver,
+	entClient *ent.Client,
 	opts ...Option,
 ) (*Server, error) {
 	cfg := &config{
-		entClient:  nil,
 		playground: false,
 	}
 	for _, opt := range opts {
@@ -136,12 +128,20 @@ func NewServer(
 
 	return &Server{
 		cfg:    cfg,
+		ent:    entClient,
 		schema: schema,
 	}, nil
 }
 
 // Routes defines and returns the routes for this server.
 func (s *Server) MountRoutes(r chi.Router) {
+	r.Use(func(h http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ctx := r.Context()
+			ctx = ent.NewContext(ctx, s.ent)
+			h.ServeHTTP(w, r.WithContext(ctx))
+		})
+	})
 	r.Handle("/query", s.handleQuery())
 	if s.cfg.playground {
 		r.Method(http.MethodGet, "/playground", playground.Handler("Playground", "/query"))
@@ -184,11 +184,9 @@ func (s *Server) handleQuery() http.Handler {
 	if s.cfg.apollotracing {
 		srv.Use(apollotracing.Tracer{})
 	}
-	if s.cfg.entClient != nil {
-		srv.Use(entgql.Transactioner{
-			TxOpener: s.cfg.entClient,
-		})
-	}
 
+	srv.Use(entgql.Transactioner{
+		TxOpener: entgql.TxOpenerFunc(ent.OpenTxFromContext),
+	})
 	return srv
 }

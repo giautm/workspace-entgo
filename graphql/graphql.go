@@ -20,6 +20,5 @@ func NewServeFx(client *ent.Client) (*Server, error) {
 		opts = DevelopmentOptions
 	}
 
-	opts = append(opts, WithEntTransaction(client))
-	return NewServer(resolver.NewResolver(client), opts...)
+	return NewServer(resolver.NewResolver(), client, opts...)
 }
